@@ -31,14 +31,14 @@
   .nav{display:flex;flex-direction:column;gap:8px}.nav button{width:100%;text-align:left}.nav .active{border-color:var(--accent)}
   .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1 / -1}
   label{font-size:.85rem;color:var(--muted)}input,textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:rgba(148,163,184,.06);color:var(--text)}textarea{min-height:96px;resize:vertical}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap}.swatch{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(148,163,184,.25);border-radius:999px}.dot{width:14px;height:14px;border-radius:999px;border:1px solid rgba(148,163,184,.4)}
-  .footer{margin-top:16px;text-align:center;color:var(--muted)}
-  .toast{position:fixed;right:16px;bottom:16px;background:var(--card);border:1px solid rgba(148,163,184,.25);padding:10px 12px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none}.toast.show{display:block;animation:fade 2.6s ease forwards}
-  @keyframes fade{0%{opacity:0;transform:translateY(6px)}10%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
   .icon-preview{width:22px;height:22px;border-radius:6px;object-fit:cover;border:1px solid rgba(148,163,184,.25);background:#0001}
   .history{border:1px dashed rgba(148,163,184,.28);padding:10px;border-radius:12px}
   .history-item{display:flex;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px dashed rgba(148,163,184,.18)}
   .history-item:last-child{border-bottom:none}
+  .toast{position:fixed;right:16px;bottom:16px;background:var(--card);border:1px solid rgba(148,163,184,.25);padding:10px 12px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none}
+  .toast.show{display:block;animation:fade 2.6s ease forwards}
+  @keyframes fade{0%{opacity:0;transform:translateY(6px)}10%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}
 </style>
 </head>
 <body>
@@ -66,26 +66,24 @@
 
     <main class="card">
       <div class="panel">
-        <!-- APPEARANCE -->
+        <!-- Appearance -->
         <section data-pane="appearance">
           <h3>🎨 Giao diện</h3>
           <div class="form">
             <div class="full">
               <label>Theme cho index.html</label>
-              <select id="themeSelect" name="theme">
-                <option value="light">Light</option><option value="dark">Dark</option><option value="pastel">Pastel</option><option value="gradient">Gradient</option>
-              </select>
+              <select id="themeSelect"><option value="light">Light</option><option value="dark">Dark</option><option value="pastel">Pastel</option><option value="gradient">Gradient</option></select>
             </div>
             <div><label>Accent</label><input id="accent" type="color" value="#0ea5e9"/></div>
             <div><label>Open-to-work</label><select id="openToWork"><option value="true">Đang mở</option><option value="false">Đóng</option></select></div>
             <div class="full toolbar" style="justify-content:flex-end;margin-top:6px">
-              <button id="btnAppearanceApply" type="button" class="btn">Áp dụng</button>
-              <button id="btnAppearanceSave" type="button" class="btn btn-primary">Lưu</button>
+              <button id="btnAppearanceApply" class="btn" type="button">Áp dụng</button>
+              <button id="btnAppearanceSave" class="btn btn-primary" type="button">Lưu</button>
             </div>
           </div>
         </section>
 
-        <!-- PROFILE -->
+        <!-- Profile -->
         <section data-pane="profile" hidden>
           <h3>👤 Thông tin cơ bản</h3>
           <div class="form">
@@ -95,23 +93,21 @@
             <div class="full"><label>Avatar URL hoặc Data URL</label><input id="avatar" placeholder="https://.../avatar.jpg"/></div>
             <div class="full"><label>Giới thiệu (bio)</label><textarea id="bio" placeholder="Dùng \n để xuống dòng"></textarea></div>
             <div class="full"><label>Badges (tối đa 3)</label><div class="form"><input id="badge1" placeholder="⚡ ESP32 / IoT"/><input id="badge2" placeholder="🎨 UI/UX"/><input id="badge3" placeholder="🧠 AI Tools"/></div></div>
-            <div class="full toolbar" style="justify-content:flex-end"><button id="btnProfileApply" type="button" class="btn">Áp dụng</button><button id="btnProfileSave" type="button" class="btn btn-primary">Lưu</button></div>
+            <div class="full toolbar" style="justify-content:flex-end"><button id="btnProfileApply" class="btn" type="button">Áp dụng</button><button id="btnProfileSave" class="btn btn-primary" type="button">Lưu</button></div>
           </div>
         </section>
 
-        <!-- LINKS (có upload icon) -->
+        <!-- Links -->
         <section data-pane="links" hidden>
           <h3>🔗 Liên kết (có thể tải icon PNG/JPG ≤ 150KB)</h3>
-          <div id="linksForm" class="form">
-            <!-- Tạo 8 khối chuẩn -->
-          </div>
+          <div id="linksForm" class="form"></div>
           <div class="full toolbar" style="justify-content:flex-end;margin-top:6px">
-            <button id="btnLinksApply" type="button" class="btn">Áp dụng</button>
-            <button id="btnLinksSave" type="button" class="btn btn-primary">Lưu</button>
+            <button id="btnLinksApply" class="btn" type="button">Áp dụng</button>
+            <button id="btnLinksSave" class="btn btn-primary" type="button">Lưu</button>
           </div>
         </section>
 
-        <!-- PROJECTS -->
+        <!-- Projects -->
         <section data-pane="projects" hidden>
           <h3>📁 Dự án nổi bật (3)</h3>
           <div class="form">
@@ -121,17 +117,17 @@
             <input id="p2_title" placeholder="Tiêu đề 2"/><input id="p2_url" placeholder="https://link-2"/><input id="p2_desc" class="full" placeholder="Mô tả ngắn 2"/>
             <div class="full"><strong>Dự án 3</strong></div>
             <input id="p3_title" placeholder="Tiêu đề 3"/><input id="p3_url" placeholder="https://link-3"/><input id="p3_desc" class="full" placeholder="Mô tả ngắn 3"/>
-            <div class="full toolbar" style="justify-content:flex-end"><button id="btnProjectsApply" type="button" class="btn">Áp dụng</button><button id="btnProjectsSave" type="button" class="btn btn-primary">Lưu</button></div>
+            <div class="full toolbar" style="justify-content:flex-end"><button id="btnProjectsApply" class="btn" type="button">Áp dụng</button><button id="btnProjectsSave" class="btn btn-primary" type="button">Lưu</button></div>
           </div>
         </section>
 
-        <!-- CONTACT -->
+        <!-- Contact -->
         <section data-pane="contact" hidden>
           <h3>☎️ Liên hệ</h3>
           <div class="form">
             <input id="email" placeholder="you@example.com"/><input id="phone" placeholder="+84..."/>
             <input id="contactZalo" placeholder="https://zalo.me/yourid"/><input id="contactTelegram" placeholder="https://t.me/yourid"/>
-            <div class="full toolbar" style="justify-content:flex-end"><button id="btnContactApply" type="button" class="btn">Áp dụng</button><button id="btnContactSave" type="button" class="btn btn-primary">Lưu</button></div>
+            <div class="full toolbar" style="justify-content:flex-end"><button id="btnContactApply" class="btn" type="button">Áp dụng</button><button id="btnContactSave" class="btn btn-primary" type="button">Lưu</button></div>
           </div>
         </section>
 
@@ -147,16 +143,17 @@
             <button id="btnExport" class="btn" type="button">Copy JSON</button>
             <button id="btnImport" class="btn" type="button">Import JSON</button>
             <button id="btnExportConfigFile" class="btn" type="button">Xuất file cấu hình</button>
+            <!-- Nếu có API serverless, bạn set API_ENDPOINT ở dưới để dùng nút này -->
             <button id="btnPublish" class="btn btn-primary" type="button">Publish lên GitHub</button>
           </div>
           <textarea id="ioBox" class="full" placeholder="Dán JSON để import hoặc bấm Export để xem cấu hình hiện tại" style="min-height:160px"></textarea>
         </section>
 
-        <!-- HISTORY -->
+        <!-- History -->
         <section data-pane="history" hidden>
           <h3>🗂 Lịch sử thay đổi</h3>
           <div id="historyList" class="history"></div>
-          <div class="note" style="margin-top:8px">Lưu local tối đa 50 bản. Có thể <em>Khôi phục</em> một bản bất kỳ.</div>
+          <div class="note" style="margin-top:8px">Lưu local tối đa 50 bản. Có thể <em>Xem</em> hoặc <em>Khôi phục</em>.</div>
         </section>
       </div>
     </main>
@@ -165,7 +162,7 @@
   <div class="footer">Xem trang Bio: <a href="./index.html" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)">Bio</a></div>
 </div>
 
-<!-- Modal login (đơn giản) -->
+<!-- Modal login -->
 <div id="loginModal" style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:60">
   <div style="background:var(--card);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:18px;min-width:320px">
     <h3 style="margin-top:0">🔐 Đăng nhập Admin</h3>
@@ -180,90 +177,78 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-  const STORAGE_KEY = 'bioConfig_v1';
-  const ADMIN_KEY = 'bioAdmin_v1';
-  const HISTORY_KEY = 'bioHistory_v1';
-  const API_ENDPOINT = '/api/update-config'; // 👉 sửa thành domain API của bạn nếu host khác
+  const STORAGE_KEY='bioConfig_v1';
+  const ADMIN_KEY='bioAdmin_v1';
+  const HISTORY_KEY='bioHistory_v1';
+  const API_ENDPOINT='/api/update-config'; // để trống nếu bạn không dùng serverless API
 
-  // Đăng nhập DEMO (đổi theo bạn)
+  // demo login
   const USERNAME='ThanhNha245';
   const PASSWORD='ThanhNha2405!!@@';
 
-  const DEFAULTS = {
-    name:'Your Name', role:'Nhà phát triển IoT & Web', city:'HCMC, Việt Nam',
-    avatar:'https://picsum.photos/300?grayscale', openToWork:true,
-    accent:'#0ea5e9', theme:'dark',
-    bio:'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',
-    badges:['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],
-    links:{ facebook:'', instagram:'', github:'', website:'', youtube:'', tiktok:'', zalo:'', telegram:'' },
-    projects:[
-      {title:'Chronos Mini — Đồng hồ ESP32-S3', url:'#', desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.'},
-      {title:'SmartHome 4-Relay', url:'#', desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.'},
-      {title:'Yahu — Chat • Call • Blog', url:'#', desc:'Webapp full-stack, gọn và nhanh.'}
-    ],
-    contact:{ email:'you@example.com', phone:'+84', zalo:'', telegram:'' }
-  };
+  const DEFAULTS={name:'Your Name',role:'Nhà phát triển IoT & Web',city:'HCMC, Việt Nam',avatar:'https://picsum.photos/300?grayscale',openToWork:true,accent:'#0ea5e9',theme:'dark',bio:'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',badges:['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],links:{facebook:'',instagram:'',github:'',website:'',youtube:'',tiktok:'',zalo:'',telegram:''},projects:[{title:'Chronos Mini — Đồng hồ ESP32-S3',url:'#',desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.'},{title:'SmartHome 4-Relay',url:'#',desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.'},{title:'Yahu — Chat • Call • Blog',url:'#',desc:'Webapp full-stack, gọn và nhanh.'}],contact:{email:'you@example.com',phone:'+84',zalo:'',telegram:''}};
 
-  const $=s=>document.querySelector(s); const $$=s=>Array.from(document.querySelectorAll(s));
-  function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
+  const $=s=>document.querySelector(s);const $$=s=>Array.from(document.querySelectorAll(s));
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
-  function loadConfig(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {...DEFAULTS}; }catch{ return {...DEFAULTS}; } }
-  function saveConfig(cfg){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
-  function loadHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }catch{ return []; } }
-  function saveHistory(list){ localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(-50))); }
-  function addHistory(action, cfg){ const list=loadHistory(); list.push({ t: Date.now(), action, cfg }); saveHistory(list); renderHistory(); }
+  function loadConfig(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{...DEFAULTS}}catch{return {...DEFAULTS}}}
+  function saveConfig(cfg){localStorage.setItem(STORAGE_KEY,JSON.stringify(cfg))}
+  function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return[]}}
+  function saveHistory(list){localStorage.setItem(HISTORY_KEY,JSON.stringify(list.slice(-50)))}
 
-  function isAdmin(){ return localStorage.getItem(ADMIN_KEY)==='true'; }
-  function setAdmin(flag){ localStorage.setItem(ADMIN_KEY, flag?'true':'false'); $('#adminState').textContent='Admin: '+(flag?'ON':'OFF'); $('#btnLogout').style.display=flag?'inline-block':'none'; $('#btnOpenLogin').style.display=flag?'none':'inline-block'; }
+  function addHistory(action,cfg){
+    const list=loadHistory();
+    list.push({t: Date.now(), action: String(action||'save'), cfg: cfg && typeof cfg==='object'?cfg:{}}); // ✅ đảm bảo t là số ms
+    saveHistory(list);
+    renderHistory();
+  }
 
-  function applyTheme(theme, accent){ document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient'); document.body.classList.add('theme-'+(theme||'dark')); document.documentElement.style.setProperty('--accent', accent||'#0ea5e9'); }
+  function isAdmin(){return localStorage.getItem(ADMIN_KEY)==='true'}
+  function setAdmin(flag){localStorage.setItem(ADMIN_KEY,flag?'true':'false');$('#adminState').textContent='Admin: '+(flag?'ON':'OFF');$('#btnLogout').style.display=flag?'inline-block':'none';$('#btnOpenLogin').style.display=flag?'none':'inline-block'}
+
+  function applyTheme(theme,accent){document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');document.body.classList.add('theme-'+(theme||'dark'));document.documentElement.style.setProperty('--accent',accent||'#0ea5e9')}
 
   // Tabs
-  const navButtons = $$('.nav .btn'); const panes=$$('[data-pane]');
-  function showTab(id){ panes.forEach(p=>p.hidden=p.getAttribute('data-pane')!==id); navButtons.forEach(b=>b.classList.toggle('active', b.dataset.tab===id)); }
+  const navButtons=$$('.nav .btn');const panes=$$('[data-pane]');
+  function showTab(id){panes.forEach(p=>p.hidden=p.getAttribute('data-pane')!==id);navButtons.forEach(b=>b.classList.toggle('active',b.dataset.tab===id))}
   navButtons.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 
   // Refs
-  const themeSelect=$('#themeSelect'), accentInput=$('#accent'), openToWorkSel=$('#openToWork');
-  const nameInp=$('#name'), roleInp=$('#role'), cityInp=$('#city'), avatarInp=$('#avatar'), bioInp=$('#bio');
-  const badge1=$('#badge1'), badge2=$('#badge2'), badge3=$('#badge3');
-  const p1t=$('#p1_title'), p1u=$('#p1_url'), p1d=$('#p1_desc'); const p2t=$('#p2_title'), p2u=$('#p2_url'), p2d=$('#p2_desc'); const p3t=$('#p3_title'), p3u=$('#p3_url'), p3d=$('#p3_desc');
-  const email=$('#email'), phone=$('#phone'), contactZalo=$('#contactZalo'), contactTelegram=$('#contactTelegram');
+  const themeSelect=$('#themeSelect'),accentInput=$('#accent'),openToWorkSel=$('#openToWork');
+  const nameInp=$('#name'),roleInp=$('#role'),cityInp=$('#city'),avatarInp=$('#avatar'),bioInp=$('#bio');
+  const badge1=$('#badge1'),badge2=$('#badge2'),badge3=$('#badge3');
+  const p1t=$('#p1_title'),p1u=$('#p1_url'),p1d=$('#p1_desc');const p2t=$('#p2_title'),p2u=$('#p2_url'),p2d=$('#p2_desc');const p3t=$('#p3_title'),p3u=$('#p3_url'),p3d=$('#p3_desc');
+  const email=$('#email'),phone=$('#phone'),contactZalo=$('#contactZalo'),contactTelegram=$('#contactTelegram');
 
-  // Links dynamic builder (8 mạng xã hội phổ biến)
-  const linkKeys = ['facebook','instagram','github','website','youtube','tiktok','zalo','telegram'];
-  const linksForm = $('#linksForm');
-  linksForm.innerHTML = linkKeys.map(k=>`
+  // Links builder
+  const linkKeys=['facebook','instagram','github','website','youtube','tiktok','zalo','telegram'];
+  const linksForm=$('#linksForm');
+  linksForm.innerHTML=linkKeys.map(k=>`
     <div class="full" style="display:grid;grid-template-columns:140px 1fr 1fr;gap:8px;align-items:center">
-      <div><label style="display:block;margin-bottom:4px">${k.charAt(0).toUpperCase()+k.slice(1)}</label>
-        <img id="${k}_preview" class="icon-preview" alt=""/>
-      </div>
+      <div><label style="display:block;margin-bottom:4px">${k.charAt(0).toUpperCase()+k.slice(1)}</label><img id="${k}_preview" class="icon-preview" alt=""/></div>
       <input id="${k}" placeholder="https://${k}.com/yourid"/>
       <div style="display:flex;gap:8px;align-items:center">
-        <input id="${k}_iconUrl" placeholder="Icon URL (tùy chọn)"/>
+        <input id="${k}_iconUrl" placeholder="Icon URL (tuỳ chọn)"/>
         <input id="${k}_iconFile" type="file" accept="image/*" style="max-width:180px"/>
       </div>
     </div>
   `).join('');
 
-  // Helpers
   function fill(cfg){
-    themeSelect.value = cfg.theme||'dark'; accentInput.value = cfg.accent||'#0ea5e9'; openToWorkSel.value = String(!!cfg.openToWork);
-    nameInp.value=cfg.name||''; roleInp.value=cfg.role||''; cityInp.value=cfg.city||''; avatarInp.value=cfg.avatar||''; bioInp.value=(cfg.bio||'').replace(/<br\s*\/?>/gi,'\n');
-    badge1.value=cfg.badges?.[0]||''; badge2.value=cfg.badges?.[1]||''; badge3.value=cfg.badges?.[2]||'';
-    const L=cfg.links||{}; linkKeys.forEach(k=>{ const v=L[k]; if(!v){ $(`#${k}`).value=''; $(`#${k}_iconUrl`).value=''; $(`#${k}_preview`).src=''; return; }
-      const obj=typeof v==='string'?{url:v}:{...v}; $(`#${k}`).value=obj.url||''; $(`#${k}_iconUrl`).value=obj.icon||''; $(`#${k}_preview`).src=obj.icon||''; });
-    const P=cfg.projects||[]; p1t.value=P[0]?.title||''; p1u.value=P[0]?.url||''; p1d.value=P[0]?.desc||''; p2t.value=P[1]?.title||''; p2u.value=P[1]?.url||''; p2d.value=P[1]?.desc||''; p3t.value=P[2]?.title||''; p3u.value=P[2]?.url||''; p3d.value=P[2]?.desc||'';
-    email.value=cfg.contact?.email||''; phone.value=cfg.contact?.phone||''; contactZalo.value=cfg.contact?.zalo||''; contactTelegram.value=cfg.contact?.telegram||'';
+    themeSelect.value=cfg.theme||'dark';accentInput.value=cfg.accent||'#0ea5e9';openToWorkSel.value=String(!!cfg.openToWork);
+    nameInp.value=cfg.name||'';roleInp.value=cfg.role||'';cityInp.value=cfg.city||'';avatarInp.value=cfg.avatar||'';bioInp.value=(cfg.bio||'').replace(/<br\s*\/?>/gi,'\n');
+    badge1.value=cfg.badges?.[0]||'';badge2.value=cfg.badges?.[1]||'';badge3.value=cfg.badges?.[2]||'';
+    const L=cfg.links||{};linkKeys.forEach(k=>{const v=L[k];if(!v){$(`#${k}`).value='';$(`#${k}_iconUrl`).value='';$(`#${k}_preview`).src='';return}const obj=typeof v==='string'?{url:v}:{...v};$(`#${k}`).value=obj.url||'';$(`#${k}_iconUrl`).value=obj.icon||'';$(`#${k}_preview`).src=obj.icon||'';});
+    const P=cfg.projects||[];p1t.value=P[0]?.title||'';p1u.value=P[0]?.url||'';p1d.value=P[0]?.desc||'';p2t.value=P[1]?.title||'';p2u.value=P[1]?.url||'';p2d.value=P[1]?.desc||'';p3t.value=P[2]?.title||'';p3u.value=P[2]?.url||'';p3d.value=P[2]?.desc||'';
+    email.value=cfg.contact?.email||'';phone.value=cfg.contact?.phone||'';contactZalo.value=cfg.contact?.zalo||'';contactTelegram.value=cfg.contact?.telegram||'';
   }
 
   function readAllInto(cfg){
-    cfg.theme=themeSelect.value; cfg.accent=accentInput.value||cfg.accent; cfg.openToWork=openToWorkSel.value==='true';
-    cfg.name=nameInp.value.trim()||cfg.name; cfg.role=roleInp.value.trim(); cfg.city=cityInp.value.trim(); cfg.avatar=avatarInp.value.trim()||cfg.avatar;
+    cfg.theme=themeSelect.value;cfg.accent=accentInput.value||cfg.accent;cfg.openToWork=openToWorkSel.value==='true';
+    cfg.name=nameInp.value.trim()||cfg.name;cfg.role=roleInp.value.trim();cfg.city=cityInp.value.trim();cfg.avatar=avatarInp.value.trim()||cfg.avatar;
     cfg.bio=bioInp.value.trim();
     cfg.badges=[badge1.value.trim(),badge2.value.trim(),badge3.value.trim()].filter(Boolean);
-    const links={}; linkKeys.forEach(k=>{ const url=$(`#${k}`).value.trim(); const iconURL=$(`#${k}_iconUrl`).value.trim();
-      if(url){ links[k]=iconURL?{url,icon:iconURL}:url; } });
+    const links={};linkKeys.forEach(k=>{const url=$(`#${k}`).value.trim();const iconURL=$(`#${k}_iconUrl`).value.trim();if(url){links[k]=iconURL?{url,icon:iconURL}:url}});
     cfg.links=links;
     cfg.projects=[{title:p1t.value.trim(),url:p1u.value.trim(),desc:p1d.value.trim()},{title:p2t.value.trim(),url:p2u.value.trim(),desc:p2d.value.trim()},{title:p3t.value.trim(),url:p3u.value.trim(),desc:p3d.value.trim()}].filter(p=>p.title||p.url||p.desc);
     cfg.contact={email:email.value.trim(),phone:phone.value.trim(),zalo:contactZalo.value.trim(),telegram:contactTelegram.value.trim()};
@@ -271,31 +256,21 @@
   }
 
   function validate(cfg){
-    const errs=[]; if(!cfg.name) errs.push('Thiếu "name".');
-    if(cfg.accent && !/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cfg.accent)) errs.push('Màu accent không hợp lệ.');
-    if(cfg.theme && !['light','dark','pastel','gradient'].includes(cfg.theme)) errs.push('Theme không hợp lệ.');
-    const bad=[]; for(const [k,v] of Object.entries(cfg.links||{})){ const u=typeof v==='string'?v:v?.url; const ic=typeof v==='string'?null:v?.icon;
-      try{ if(u) new URL(u); }catch{ bad.push(k); }
-      if(ic && !/^data:image\/|^https?:\/\//i.test(ic)) errs.push(`Icon của ${k} phải là Data URL hoặc URL ảnh.`);
-    }
-    if(bad.length) errs.push('URL không hợp lệ ở: '+bad.join(', '));
-    return errs;
+    const errs=[];if(!cfg.name)errs.push('Thiếu "name".');if(cfg.accent&&!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cfg.accent))errs.push('Màu accent không hợp lệ.');if(cfg.theme&&!['light','dark','pastel','gradient'].includes(cfg.theme))errs.push('Theme không hợp lệ.');
+    const bad=[];for(const [k,v] of Object.entries(cfg.links||{})){const u=typeof v==='string'?v:v?.url;const ic=typeof v==='string'?null:v?.icon;try{if(u)new URL(u)}catch{bad.push(k)}if(ic&&!/^data:image\/|^https?:\/\//i.test(ic))errs.push(`Icon của ${k} phải là Data URL hoặc URL ảnh.`)}
+    if(bad.length)errs.push('URL không hợp lệ ở: '+bad.join(', '));return errs;
   }
 
-  // File -> DataURL cho icon
-  linkKeys.forEach(k=>{
-    const file=$(`#${k}_iconFile`), urlInp=$(`#${k}_iconUrl`), prev=$(`#${k}_preview`);
-    file.addEventListener('change',e=>{
-      const f=e.target.files && e.target.files[0]; if(!f) return;
-      if(!f.type.startsWith('image/')) return toast('Chỉ chấp nhận ảnh.');
-      if(f.size>150*1024) return toast('Icon >150KB. Vui lòng nén nhỏ hơn.');
-      const r=new FileReader(); r.onload=()=>{ urlInp.value=r.result; prev.src=r.result; toast('Đã tải icon. Bấm Lưu.'); }; r.readAsDataURL(f);
+  // File->DataURL icon
+  linkKeys.forEach(k=>{const file=$(`#${k}_iconFile`),urlInp=$(`#${k}_iconUrl`),prev=$(`#${k}_preview`);
+    file.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith('image/'))return toast('Chỉ chấp nhận ảnh.');if(f.size>150*1024)return toast('Icon >150KB. Vui lòng nén nhỏ hơn.');
+      const r=new FileReader();r.onload=()=>{urlInp.value=r.result;prev.src=r.result;toast('Đã tải icon. Bấm Lưu.');};r.readAsDataURL(f);
     });
   });
 
-  // Save/Apply helpers
-  function applySection(readFn){ if(!isAdmin()) return alert('Bạn cần đăng nhập admin.'); const cfg=loadConfig(); readFn(cfg); const errs=validate(cfg); if(errs.length) return alert('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); addHistory('apply', cfg); toast('Đã áp dụng (local).'); }
-  function saveSection(readFn){ if(!isAdmin()) return alert('Bạn cần đăng nhập admin.'); const cfg=loadConfig(); readFn(cfg); const errs=validate(cfg); if(errs.length) return alert('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); addHistory('save', cfg); toast('Đã lưu (local).'); }
+  // Apply/Save helpers
+  function applySection(readFn){if(!isAdmin())return alert('Bạn cần đăng nhập admin.');const cfg=loadConfig();readFn(cfg);const errs=validate(cfg);if(errs.length)return alert('Lỗi:\n- '+errs.join('\n- '));saveConfig(cfg);addHistory('apply',cfg);toast('Đã áp dụng (local).')}
+  function saveSection(readFn){if(!isAdmin())return alert('Bạn cần đăng nhập admin.');const cfg=loadConfig();readFn(cfg);const errs=validate(cfg);if(errs.length)return alert('Lỗi:\n- '+errs.join('\n- '));saveConfig(cfg);addHistory('save',cfg);toast('Đã lưu (local).')}
 
   // Bind buttons
   $('#btnAppearanceApply').addEventListener('click',()=>applySection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true'}));
@@ -312,44 +287,66 @@
   // IO
   $('#btnApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnSave').addEventListener('click',()=>saveSection(readAllInto));
-  $('#btnReset').addEventListener('click',()=>{ if(!isAdmin()) return alert('Bạn cần đăng nhập admin.'); if(confirm('Khôi phục mặc định?')){ saveConfig(DEFAULTS); fill(DEFAULTS); addHistory('reset', DEFAULTS); toast('Đã khôi phục mặc định.'); }});
-  $('#btnExport').addEventListener('click',()=>{ const s=JSON.stringify(loadConfig(),null,2); $('#ioBox').value=s; $('#ioBox').select(); document.execCommand('copy'); toast('Đã copy JSON vào clipboard.'); });
-  $('#btnImport').addEventListener('click',()=>{ if(!isAdmin()) return alert('Bạn cần đăng nhập admin.'); try{ const cfg=JSON.parse($('#ioBox').value); const errs=validate(cfg); if(errs.length) return alert('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); fill(cfg); addHistory('import', cfg); toast('Đã import & áp dụng.'); }catch{ alert('JSON không hợp lệ.'); }});
-  $('#btnExportConfigFile').addEventListener('click',()=>{ const blob=new Blob([JSON.stringify(loadConfig(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='bio-config.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href); });
+  $('#btnReset').addEventListener('click',()=>{if(!isAdmin())return alert('Bạn cần đăng nhập admin.');if(confirm('Khôi phục mặc định?')){saveConfig(DEFAULTS);fill(DEFAULTS);addHistory('reset',DEFAULTS);toast('Đã khôi phục mặc định.')}})
+  $('#btnExport').addEventListener('click',()=>{const s=JSON.stringify(loadConfig(),null,2);$('#ioBox').value=s;$('#ioBox').select();document.execCommand('copy');toast('Đã copy JSON vào clipboard.')});
+  $('#btnImport').addEventListener('click',()=>{if(!isAdmin())return alert('Bạn cần đăng nhập admin.');try{const cfg=JSON.parse($('#ioBox').value);const errs=validate(cfg);if(errs.length)return alert('Lỗi:\n- '+errs.join('\n- '));saveConfig(cfg);fill(cfg);addHistory('import',cfg);toast('Đã import & áp dụng.')}catch{alert('JSON không hợp lệ.')}})
+  $('#btnExportConfigFile').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(loadConfig(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bio-config.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);});
+  $('#btnPublish').addEventListener('click',publishToGitHub);
 
-  // Publish to GitHub via API
-  async function publishToGitHub(){ if(!isAdmin()) return alert('Bạn cần đăng nhập admin.');
-    const cfg=loadConfig(); const errs=validate(cfg); if(errs.length) return alert('Lỗi:\n- '+errs.join('\n- '));
-    try{
-      const res=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({config:cfg,message:'Update bio-config.json from admin'})});
-      if(!res.ok) throw new Error(await res.text());
-      addHistory('publish', cfg); toast('✅ Đã publish lên GitHub. Chờ Pages build vài chục giây.');
-    }catch(e){ alert('Publish thất bại: '+(e.message||e)); }
+  // Publish (tuỳ chọn, cần API serverless; để trống API_ENDPOINT sẽ báo lỗi đẹp)
+  async function publishToGitHub(){
+    if(!isAdmin())return alert('Bạn cần đăng nhập admin.');
+    if(!API_ENDPOINT||API_ENDPOINT===''){return alert('Chưa cấu hình API_ENDPOINT. Bạn có thể export file và commit lên GitHub thủ công.')}
+    const cfg=loadConfig();const errs=validate(cfg);if(errs.length)return alert('Lỗi:\n- '+errs.join('\n- '));
+    try{const res=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({config:cfg,message:'Update bio-config.json from admin'})});
+      if(!res.ok)throw new Error(await res.text());addHistory('publish',cfg);toast('✅ Đã publish lên GitHub. Chờ Pages build vài chục giây.');
+    }catch(e){alert('Publish thất bại: '+(e.message||e))}
   }
-  $('#btnPublish').addEventListener('click', publishToGitHub);
 
-  // History UI
+  // ==== FIX: renderHistory an toàn ====
+  function toValidDate(t){
+    if(t instanceof Date&&!isNaN(t))return t;
+    if(typeof t==='number'&&isFinite(t))return new Date(t);
+    if(typeof t==='string'&&/^\d+$/.test(t))return new Date(Number(t));
+    const d=new Date(t);if(!isNaN(d))return d;
+    return null;
+  }
   function renderHistory(){
-    const list=loadHistory(); const wrap=$('#historyList'); if(!wrap) return; if(!list.length){ wrap.innerHTML='<div class="muted">Chưa có lịch sử.</div>'; return; }
-    wrap.innerHTML = list.map((it,i)=>{
-      const d=new Date(it.t); const idx=i;
-      return `<div class="history-item">
-        <div><strong>${new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(d)}</strong> — ${it.action}</div>
-        <div class="toolbar"><button class="btn" data-view="${idx}">Xem</button><button class="btn" data-restore="${idx}">Khôi phục</button></div>
-      </div>`;
-    }).join('');
-    wrap.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',e=>{ const i=+e.currentTarget.dataset.view; $('#ioBox').value=JSON.stringify(loadHistory()[i].cfg,null,2); showTab('io'); toast('Đã đưa JSON vào ô IO.'); }));
-    wrap.querySelectorAll('[data-restore]').forEach(b=>b.addEventListener('click',e=>{ const i=+e.currentTarget.dataset.restore; const snap=loadHistory()[i].cfg; if(confirm('Khôi phục cấu hình này?')){ saveConfig(snap); fill(snap); toast('Đã khôi phục cấu hình từ lịch sử.'); } }));
+    const wrap=document.getElementById('historyList');if(!wrap)return;
+    let list;try{list=JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{list=[]}
+    const normalized=[];
+    for(const it of list){if(!it||typeof it!=='object')continue;const when=toValidDate(it.t??it.time??it.date);const cfg=(it.cfg&&typeof it.cfg==='object')?it.cfg:null;if(!when||!cfg)continue;normalized.push({t:when.getTime(),action:String(it.action||'save'),cfg});}
+    const savedRaw=localStorage.getItem(HISTORY_KEY)||'[]';const rebuiltRaw=JSON.stringify(normalized);if(savedRaw!==rebuiltRaw)localStorage.setItem(HISTORY_KEY,rebuiltRaw);
+    if(!normalized.length){wrap.innerHTML='<div class="muted">Chưa có lịch sử.</div>';return}
+    wrap.innerHTML=normalized.map((it,i)=>{const d=new Date(it.t);const stamp=new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(d);return`
+      <div class="history-item">
+        <div><strong>${stamp}</strong> — ${it.action}</div>
+        <div class="toolbar"><button class="btn" data-view="${i}">Xem</button><button class="btn" data-restore="${i}">Khôi phục</button></div>
+      </div>`}).join('');
+    wrap.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',e=>{const idx=+e.currentTarget.dataset.view;const entry=normalized[idx];const ioBox=$('#ioBox');if(ioBox&&entry?.cfg){ioBox.value=JSON.stringify(entry.cfg,null,2)}showTab('io')}));
+    wrap.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',e=>{const idx=+e.currentTarget.dataset.restore;const entry=normalized[idx];if(entry?.cfg&&confirm('Khôi phục cấu hình này?')){localStorage.setItem(STORAGE_KEY,JSON.stringify(entry.cfg));fill(entry.cfg);toast('Đã khôi phục cấu hình từ lịch sử.')}}));
   }
 
-  // Login modal (đơn giản)
-  const loginModal=$('#loginModal'); $('#btnOpenLogin').addEventListener('click',()=>{loginModal.style.display='grid';$('#username').focus()}); $('#btnCloseLogin').addEventListener('click',()=>loginModal.style.display='none');
-  $('#btnLogin').addEventListener('click',()=>{ const u=$('#username').value.trim(); const p=$('#password').value; if(u===USERNAME && p===PASSWORD){ setAdmin(true); loginModal.style.display='none'; toast('Đăng nhập thành công!'); fill(loadConfig()); } else alert('Sai tài khoản hoặc mật khẩu.'); });
-  $('#btnLogout').addEventListener('click',()=>{ setAdmin(false); toast('Đã đăng xuất.'); });
+  // Login
+  const loginModal=$('#loginModal');$('#btnOpenLogin').addEventListener('click',()=>{loginModal.style.display='grid';$('#username').focus()});$('#btnCloseLogin').addEventListener('click',()=>loginModal.style.display='none');
+  $('#btnLogin').addEventListener('click',()=>{const u=$('#username').value.trim();const p=$('#password').value;if(u===USERNAME&&p===PASSWORD){setAdmin(true);loginModal.style.display='none';toast('Đăng nhập thành công!');fill(loadConfig());}else alert('Sai tài khoản hoặc mật khẩu.')});
+  $('#btnLogout').addEventListener('click',()=>{setAdmin(false);toast('Đã đăng xuất.')});
+
+  // Icon file handlers
+  linkKeys.forEach(k=>{const file=$(`#${k}_iconFile`),urlInp=$(`#${k}_iconUrl`),prev=$(`#${k}_preview`);
+    file.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith('image/'))return toast('Chỉ chấp nhận ảnh.');if(f.size>150*1024)return toast('Icon >150KB. Vui lòng nén nhỏ hơn.');const r=new FileReader();r.onload=()=>{urlInp.value=r.result;prev.src=r.result;toast('Đã tải icon. Bấm Lưu.')};r.readAsDataURL(f)});
+  });
 
   // Init
   (function init(){
-    const cfg=loadConfig(); applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9'); fill(cfg); renderHistory(); setAdmin(localStorage.getItem(ADMIN_KEY)==='true'); showTab('appearance');
+    const cfg=loadConfig();
+    applyTheme(cfg.theme||'dark',cfg.accent||'#0ea5e9');
+    // dựng form link rows trước khi fill
+    // (đã dựng ở trên rồi bằng innerHTML)
+    fill(cfg);
+    renderHistory(); // ✅ gọi sau fill
+    setAdmin(localStorage.getItem(ADMIN_KEY)==='true');
+    showTab('appearance');
   })();
 </script>
 </body>
