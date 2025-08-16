@@ -21,52 +21,70 @@
   <link rel="preload" as="image" href="https://picsum.photos/300?grayscale">
 
   <style>
-    :root { --bg:#0b0c10; --card:#0e1116; --card-2:#11151b; --muted:#a3aab6; --text:#e6eaf0; --accent:#60a5fa; --ring:rgba(96,165,250,.35); --ok:#10b981; --shadow:0 12px 40px rgba(0,0,0,.35); --radius:18px; }
-    .theme-light { --bg:#f7f8fb; --card:#ffffff; --card-2:#f6f8ff; --muted:#445063; --text:#0f172a; --accent:#0ea5e9; --ring:rgba(14,165,233,.22); --shadow:0 10px 30px rgba(2,6,23,.08); --grid-bg: radial-gradient(900px 900px at 110% -10%, rgba(14,165,233,.10), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(34,197,94,.08), transparent 60%); }
-    .theme-dark { --bg:#0b0c10; --card:#0e1116; --card-2:#11151b; --muted:#a3aab6; --text:#e6eaf0; --accent:#14b8a6; --ring:rgba(20,184,166,.28); --shadow:0 12px 40px rgba(0,0,0,.35); --grid-bg: radial-gradient(1200px 1200px at 110% -10%, rgba(20,184,166,.10), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(14,165,233,.10), transparent 60%); }
-    .theme-pastel { --bg:#fff1f2; --card:#ffffff; --card-2:#fff7fb; --muted:#6b7280; --text:#111827; --accent:#a78bfa; --ring:rgba(167,139,250,.25); --shadow:0 12px 30px rgba(168,85,247,.12); --grid-bg: radial-gradient(900px 900px at 100% -10%, rgba(244,114,182,.18), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(167,139,250,.20), transparent 60%); }
-    .theme-gradient { --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9); --muted:#cbd5e1; --text:#f8fafc; --accent:#60a5fa; --ring:rgba(96,165,250,.35); --shadow:0 20px 60px rgba(0,0,0,.45); --grid-bg: radial-gradient(1400px 1000px at 120% -20%, rgba(96,165,250,.25), transparent 60%), radial-gradient(1100px 900px at -10% 120%, rgba(167,139,250,.25), transparent 60%), linear-gradient(135deg,#0b1220 0%,#0b0c10 40%,#0b0c10 100%); }
+    :root {
+      --bg:#0b0c10; --card:#0e1116; --card-2:#11151b; --muted:#a3aab6; --text:#e6eaf0;
+      --accent:#60a5fa; --ring:rgba(96,165,250,.35); --ok:#10b981; --shadow:0 12px 40px rgba(0,0,0,.35); --radius:18px;
+    }
+    .theme-light { --bg:#f7f8fb; --card:#ffffff; --card-2:#f6f8ff; --muted:#445063; --text:#0f172a; --accent:#0ea5e9; --ring:rgba(14,165,233,.22); --shadow:0 10px 30px rgba(2,6,23,.08);
+      --grid-bg: radial-gradient(900px 900px at 110% -10%, rgba(14,165,233,.10), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(34,197,94,.08), transparent 60%); }
+    .theme-dark { --bg:#0b0c10; --card:#0e1116; --card-2:#11151b; --muted:#a3aab6; --text:#e6eaf0; --accent:#14b8a6; --ring:rgba(20,184,166,.28); --shadow:0 12px 40px rgba(0,0,0,.35);
+      --grid-bg: radial-gradient(1200px 1200px at 110% -10%, rgba(20,184,166,.10), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(14,165,233,.10), transparent 60%); }
+    .theme-pastel { --bg:#fff1f2; --card:#ffffff; --card-2:#fff7fb; --muted:#6b7280; --text:#111827; --accent:#a78bfa; --ring:rgba(167,139,250,.25); --shadow:0 12px 30px rgba(168,85,247,.12);
+      --grid-bg: radial-gradient(900px 900px at 100% -10%, rgba(244,114,182,.18), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(167,139,250,.20), transparent 60%); }
+    .theme-gradient { --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9); --muted:#cbd5e1; --text:#f8fafc; --accent:#60a5fa; --ring:rgba(96,165,250,.35); --shadow:0 20px 60px rgba(0,0,0,.45);
+      --grid-bg: radial-gradient(1400px 1000px at 120% -20%, rgba(96,165,250,.25), transparent 60%), radial-gradient(1100px 900px at -10% 120%, rgba(167,139,250,.25), transparent 60%), linear-gradient(135deg, #0b1220 0%, #0b0c10 40%, #0b0c10 100%); }
+
     *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:var(--grid-bg, radial-gradient(1200px 1200px at 110% -10%, rgba(14,165,233,.08), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(34,197,94,.08), transparent 60%)),var(--bg)}
+    body{margin:0; color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background: var(--grid-bg, radial-gradient(1200px 1200px at 110% -10%, rgba(14,165,233,.08), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(34,197,94,.08), transparent 60%)), var(--bg);}
     .container{max-width:1080px;margin:auto;padding:28px}
-    .hero{position:relative;overflow:hidden;border-radius:var(--radius);padding:28px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--card);border:1px solid rgba(148,163,184,.14);box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
-    .hero::before{content:"";position:absolute;inset:-1px;background:radial-gradient(1400px 1400px at 120% -20%,var(--ring),transparent 50%);pointer-events:none}
-    .avatar{width:104px;height:104px;border-radius:24px;overflow:hidden;flex:0 0 104px;border:1px solid rgba(148,163,184,.18);background:#0b0c10;position:relative;box-shadow:0 0 0 6px rgba(14,165,233,.08),0 0 40px rgba(14,165,233,.12)}
-    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .who{display:flex;flex-direction:column;gap:8px;min-width:0}
-    .name{font-size:1.9rem;font-weight:800;line-height:1.1;letter-spacing:-.02em;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+    .hero{position:relative; overflow:hidden; border-radius:var(--radius); padding:28px; background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card);
+      border:1px solid rgba(148,163,184,.14); box-shadow: var(--shadow); display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center;}
+    .hero::before{content:""; position:absolute; inset:-1px; background: radial-gradient(1400px 1400px at 120% -20%, var(--ring), transparent 50%); pointer-events:none;}
+    .avatar{width:104px; height:104px; border-radius:24px; overflow:hidden; flex:0 0 104px;
+      border:1px solid rgba(148,163,184,.18); background:#0b0c10; position:relative; box-shadow: 0 0 0 6px rgba(14,165,233,.08), 0 0 40px rgba(14,165,233,.12);}
+    .avatar img{width:100%;height:100%;object-fit:cover; display:block}
+    .who{display:flex; flex-direction:column; gap:8px; min-width:0}
+    .name{font-size:1.9rem; font-weight:800; line-height:1.1; letter-spacing:-.02em; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
     .dot{width:10px;height:10px;border-radius:999px;background:var(--ok);box-shadow:0 0 0 6px rgba(16,185,129,.12)}
     .tagline{color:var(--muted)}
-    .badges{display:flex;flex-wrap:wrap;gap:8px}
-    .badge{padding:8px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.18);background:rgba(148,163,184,.06);font-weight:500}
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:18px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--card);border:1px solid rgba(148,163,184,.14);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .badges{display:flex; flex-wrap:wrap; gap:8px}
+    .badge{padding:8px 10px; border-radius:999px; border:1px solid rgba(148,163,184,.18); background:rgba(148,163,184,.06); font-weight:500}
+
+    .grid{display:grid; grid-template-columns:320px 1fr; gap:18px; margin-top:18px}
+    @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+    .card{background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card); border:1px solid rgba(148,163,184,.14); border-radius:var(--radius); box-shadow: var(--shadow);}
     .section{padding:18px}
-    .section h2{font-size:1.05rem;margin:0 0 10px 2px;opacity:.95;letter-spacing:.02em}
-    .links{display:flex;flex-direction:column;gap:12px}
-    .link{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:1px solid rgba(148,163,184,.16);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);text-decoration:none;color:inherit;transition:.12s ease}
-    .link:hover{transform:translateY(-1px);box-shadow:0 10px 24px var(--ring);border-color:var(--ring)}
-    .link img{width:22px;height:22px;opacity:.9}
-    .pill{margin-left:auto;font-size:.85rem;color:var(--muted)}
+    .section h2{font-size:1.05rem; margin:0 0 10px 2px; opacity:.95; letter-spacing:.02em}
+
+    .links{display:flex; flex-direction:column; gap:12px}
+    .link{display:flex; align-items:center; gap:12px; padding:14px 14px; border-radius:14px; border:1px solid rgba(148,163,184,.16);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent); text-decoration:none; color:inherit; transition:.12s ease}
+    .link:hover{ transform:translateY(-1px); box-shadow:0 10px 24px var(--ring); border-color:var(--ring) }
+    .link img{ width:22px; height:22px; opacity:.9 }
+    .pill{ margin-left:auto; font-size:.85rem; color:var(--muted) }
+
     .prose{line-height:1.7}
     .prose p{margin:0}
     .prose p + p{margin-top:10px}
-    .projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-    @media (max-width:980px){.projects{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:640px){.projects{grid-template-columns:1fr}}
-    .project{padding:16px;border:1px solid rgba(148,163,184,.16);border-radius:14px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--card-2);transition:.12s ease}
-    .project:hover{transform:translateY(-1px);box-shadow:0 10px 24px var(--ring);border-color:var(--ring)}
-    .project .title{font-weight:700;letter-spacing:.01em}
-    .project .desc{color:var(--muted);font-size:.95rem}
-    .contact{display:flex;flex-wrap:wrap;gap:12px}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.22);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);text-decoration:none;color:inherit}
-    .btn:hover{border-color:var(--ring);box-shadow:0 8px 20px var(--ring)}
-    footer{padding:18px;text-align:center;color:var(--muted)}
+
+    .projects{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px;}
+    @media (max-width:980px){ .projects{grid-template-columns:repeat(2, minmax(0,1fr));} }
+    @media (max-width:640px){ .projects{grid-template-columns:1fr;} }
+    .project{ padding:16px; border:1px solid rgba(148,163,184,.16); border-radius:14px; text-decoration:none; color:inherit;
+      display:flex; flex-direction:column; gap:8px; background:linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card-2); transition:.12s ease}
+    .project:hover{ transform:translateY(-1px); box-shadow:0 10px 24px var(--ring); border-color:var(--ring) }
+    .project .title{font-weight:700; letter-spacing:.01em}
+    .project .desc{color:var(--muted); font-size:.95rem}
+
+    .contact{display:flex; flex-wrap:wrap; gap:12px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.22);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent); text-decoration:none; color:inherit}
+    .btn:hover{border-color:var(--ring); box-shadow:0 8px 20px var(--ring)}
+
+    footer{padding:18px; text-align:center; color:var(--muted)}
     .sr{position:absolute;width:1px;height:1px;clip:rect(1px,1px,1px,1px);overflow:hidden;white-space:nowrap}
-    /* Ẩn UI mặc định tới khi đã nạp config */
-    body:not(.ready) .container{visibility:hidden}
-    body:not(.ready){background:#0b0c10}
   </style>
 </head>
 <body class="theme-gradient">
@@ -128,86 +146,176 @@
     </footer>
   </div>
 
-  <!-- ===== App JS: DEFAULTS + helpers + applyConfig ===== -->
   <script>
-    const yearEl = document.getElementById('year'); const footerName = document.getElementById('footerName'); yearEl.textContent = new Date().getFullYear();
-    const els = { name:document.getElementById('name'), avatar:document.getElementById('avatar'), role:document.getElementById('role'), city:document.getElementById('city'), bio:document.getElementById('bio'), badges:document.getElementById('badges'), links:document.getElementById('links'), projects:document.getElementById('projects'), contactBtns:document.getElementById('contactBtns'), availableDot:document.getElementById('availableDot') };
+    const yearEl = document.getElementById('year');
+    const footerName = document.getElementById('footerName');
+    yearEl.textContent = new Date().getFullYear();
+
+    const els = {
+      name: document.getElementById('name'),
+      avatar: document.getElementById('avatar'),
+      role: document.getElementById('role'),
+      city: document.getElementById('city'),
+      bio: document.getElementById('bio'),
+      badges: document.getElementById('badges'),
+      links: document.getElementById('links'),
+      projects: document.getElementById('projects'),
+      contactBtns: document.getElementById('contactBtns'),
+      availableDot: document.getElementById('availableDot')
+    };
 
     const DEFAULTS = {
-      name:'Your Name', role:'Nhà phát triển IoT & Web', city:'HCMC, Việt Nam',
-      avatar:'https://picsum.photos/300?grayscale', openToWork:true, accent:'#60a5fa', theme:'gradient',
-      bio:'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',
-      badges:['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],
-      links:{facebook:'',instagram:'',github:'',website:'',youtube:'',tiktok:'',zalo:'',telegram:''},
-      projects:[
-        {title:'Chronos Mini — Đồng hồ ESP32-S3',url:'#',desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.'},
-        {title:'SmartHome 4-Relay',url:'#',desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.'},
-        {title:'Yahu — Chat • Call • Blog',url:'#',desc:'Webapp full-stack, gọn và nhanh.'}
+      name: 'Your Name',
+      role: 'Nhà phát triển IoT & Web',
+      city: 'HCMC, Việt Nam',
+      avatar: 'https://picsum.photos/300?grayscale',
+      openToWork: true,
+      accent: '#60a5fa',
+      theme: 'gradient',
+      bio: 'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',
+      badges: ['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],
+      links: { facebook:'', instagram:'', github:'', website:'', youtube:'', tiktok:'', zalo:'', telegram:'' },
+      projects: [
+        { title:'Chronos Mini — Đồng hồ ESP32-S3', url:'#', desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.' },
+        { title:'SmartHome 4-Relay', url:'#', desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.' },
+        { title:'Yahu — Chat • Call • Blog', url:'#', desc:'Webapp full-stack, gọn và nhanh.' }
       ],
-      contact:{email:'you@example.com',phone:'+84',zalo:'',telegram:''}
+      contact: { email:'you@example.com', phone:'+84', zalo:'', telegram:'' }
     };
-    const STORAGE_KEY='bioConfig_v1';
-    function loadConfig(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{...DEFAULTS}}catch{return {...DEFAULTS}} }
+
+    const STORAGE_KEY = 'bioConfig_v1';
+
+    function loadConfig(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {...DEFAULTS}; } catch { return {...DEFAULTS}; } }
     function saveConfig(cfg){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
-    function hexToRgba(hex,a){ const v=hex.replace('#',''); const n=parseInt(v.length===3?v.split('').map(x=>x+x).join(''):v,16); const r=(n>>16)&255,g=(n>>8)&255,b=n&255; return `rgba(${r},${g},${b},${a})`; }
-    function setAccent(c){ document.documentElement.style.setProperty('--accent',c); document.documentElement.style.setProperty('--ring',hexToRgba(c,.35)); document.querySelector('meta[name="theme-color"]').setAttribute('content',c); }
-    function linkIcon(k){ const map={facebook:`<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,instagram:`<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>`,github:`<path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.11.8-.25.8-.56v-2.02c-3.26.71-3.95-1.57-3.95-1.57-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.6-.3-5.33-1.3-5.33-5.79 0-1.28.46-2.33 1.22-3.16-.12-.3-.53-1.51.12-3.15 0 0 1-.32 3.28 1.21a11.4 11.4 0 0 1 5.98 0c2.28-1.53 3.27-1.21 3.27-1.21.65 1.64.24 2.85.12 3.15.76.83 1.22 1.88 1.22 3.16 0 4.5-2.73 5.49-5.34 5.79.43.37.81 1.1.81 2.23v3.3c0 .31.21.68.81.56A11.5 11.5 0 0 0 12 .5z"/>`,website:`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,youtube:`<path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 0 0-1.95 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 2C5.12 20 12 20 12 20s6.88 0 8.59-.42a2.78 2.78 0 0 0 1.95-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 9.75 8.98 15.5 12 9.75 15.02"/>`,tiktok:`<path d="M12 2v6a6 6 0 1 0 6 6h-3a3 3 0 1 1-3-3V2z"/>`,zalo:`<path d="M4 4h16v16H6l-2 2z"/>`,telegram:`<path d="M21 3L8.5 12.5"/><path d="M21 3l-6 18-4.5-8.5L3 10.5z"/>`}; return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>${map[k]||map.website}</svg>`; }
-    function setTheme(t){ document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient'); switch((t||'dark').toLowerCase()){case'light':document.body.classList.add('theme-light');break;case'pastel':document.body.classList.add('theme-pastel');break;case'gradient':document.body.classList.add('theme-gradient');break;default:document.body.classList.add('theme-dark');}}
-    function updateHeadName(name){ const s=String(name||'Your Name').trim(); document.title=`Tôi là ${s} - Bio`; const og=document.querySelector('meta[property="og:title"]'); if(og) og.setAttribute('content',`${s} - Bio`); const tw=document.querySelector('meta[name="twitter:title"]'); if(tw) tw.setAttribute('content',`${s} - Bio`); }
+
+    function hexToRgba(hex, a){
+      const v = hex.replace('#','');
+      const bigint = parseInt(v.length===3 ? v.split('').map(x=>x+x).join('') : v, 16);
+      const r=(bigint>>16)&255, g=(bigint>>8)&255, b=bigint&255;
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    function setAccent(color){
+      document.documentElement.style.setProperty('--accent', color);
+      document.documentElement.style.setProperty('--ring', hexToRgba(color, .35));
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
+    }
+
+    function linkIcon(key){
+      const map = {
+        facebook:`<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,
+        instagram:`<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>`,
+        github:`<path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.11.8-.25.8-.56v-2.02c-3.26.71-3.95-1.57-3.95-1.57-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.6-.3-5.33-1.3-5.33-5.79 0-1.28.46-2.33 1.22-3.16-.12-.3-.53-1.51.12-3.15 0 0 1-.32 3.28 1.21a11.4 11.4 0 0 1 5.98 0c2.28-1.53 3.27-1.21 3.27-1.21.65 1.64.24 2.85.12 3.15.76.83 1.22 1.88 1.22 3.16 0 4.5-2.73 5.49-5.34 5.79.43.37.81 1.1.81 2.23v3.3c0 .31.21.68.81.56A11.5 11.5 0 0 0 12 .5z"/>`,
+        website:`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,
+        youtube:`<path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 0 0-1.95 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 2C5.12 20 12 20 12 20s6.88 0 8.59-.42a2.78 2.78 0 0 0 1.95-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 9.75 8.98 15.5 12 9.75 15.02"/>`,
+        tiktok:`<path d="M12 2v6a6 6 0 1 0 6 6h-3a3 3 0 1 1-3-3V2z"/>`,
+        zalo:`<path d="M4 4h16v16H6l-2 2z"/>`,
+        telegram:`<path d="M21 3L8.5 12.5"/><path d="M21 3l-6 18-4.5-8.5L3 10.5z"/>`
+      };
+      return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>${map[key] || map.website}</svg>`;
+    }
+
+    function setTheme(theme){
+      document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');
+      switch((theme||'dark').toLowerCase()){
+        case 'light': document.body.classList.add('theme-light'); break;
+        case 'pastel': document.body.classList.add('theme-pastel'); break;
+        case 'gradient': document.body.classList.add('theme-gradient'); break;
+        case 'dark':
+        default: document.body.classList.add('theme-dark'); break;
+      }
+    }
+
+    function updateHeadName(name){
+      const safeName = String(name || 'Your Name').trim();
+      document.title = `Tôi là ${safeName} - Bio`;
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', `${safeName} - Bio`);
+      const twTitle = document.querySelector('meta[name="twitter:title"]');
+      if (twTitle) twTitle.setAttribute('content', `${safeName} - Bio`);
+    }
+
     function applyConfig(cfg){
       setTheme(cfg.theme || DEFAULTS.theme);
-      const nm = cfg.name || DEFAULTS.name; updateHeadName(nm); els.name.textContent = nm; footerName.textContent = nm;
-      els.role.textContent = cfg.role || ''; els.city.textContent = cfg.city || ''; els.avatar.src = cfg.avatar || DEFAULTS.avatar;
-      const ogImg=document.querySelector('meta[property="og:image"]'); if(ogImg) ogImg.setAttribute('content', els.avatar.src);
-      const twImg=document.querySelector('meta[name="twitter:image"]'); if(twImg) twImg.setAttribute('content', els.avatar.src);
-      els.bio.innerHTML = cfg.bio ? cfg.bio.replace(/\n/g,'<br/>') : '';
-      const themeAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9'; setAccent(cfg.accent || themeAccent);
+
+      const nameToUse = cfg.name || DEFAULTS.name;
+      updateHeadName(nameToUse);
+      els.name.textContent = nameToUse;
+      footerName.textContent = nameToUse;
+      els.role.textContent = cfg.role || '';
+      els.city.textContent = cfg.city || '';
+      els.avatar.src = cfg.avatar || DEFAULTS.avatar;
+
+      // OG/Twitter image sync
+      const ogImg = document.querySelector('meta[property="og:image"]');
+      if (ogImg) ogImg.setAttribute('content', els.avatar.src);
+      const twImg = document.querySelector('meta[name="twitter:image"]');
+      if (twImg) twImg.setAttribute('content', els.avatar.src);
+
+      const html = cfg.bio ? cfg.bio.replace(/\n/g,'<br/>') : '';
+      els.bio.innerHTML = html;
+
+      const themeAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9';
+      setAccent(cfg.accent || themeAccent);
+
       els.availableDot.style.display = cfg.openToWork ? 'inline-block' : 'none';
-      els.badges.innerHTML=''; (cfg.badges||[]).filter(Boolean).slice(0,3).forEach(txt=>{ const span=document.createElement('span'); span.className='badge'; span.textContent=txt; els.badges.appendChild(span); });
-      els.links.innerHTML=''; Object.entries(cfg.links||{}).forEach(([k,v])=>{ if(!v) return; let url=v,icon=linkIcon(k); if(typeof v==='object'&&v.url){url=v.url;icon=v.icon||linkIcon(k)} let host=''; try{host=new URL(url).hostname.replace('www.','')}catch{} const a=document.createElement('a'); a.className='link'; a.href=url; a.target='_blank'; a.rel='noopener'; a.innerHTML=`<img loading="lazy" src="${icon}" alt="${k}" width="22" height="22" style="opacity:.9"/> ${k.charAt(0).toUpperCase()+k.slice(1)} <span class='pill'>${host}</span>`; els.links.appendChild(a); });
-      els.projects.innerHTML=''; (cfg.projects||[]).filter(p=>p&&(p.title||p.url)).slice(0,6).forEach(p=>{ const a=document.createElement('a'); a.className='project'; a.href=p.url||'#'; a.target='_blank'; a.rel='noopener'; a.innerHTML=`<div class="title">${p.title||'Dự án'}</div><div class="desc">${p.desc||''}</div>`; els.projects.appendChild(a); });
-      els.contactBtns.innerHTML=''; const c=cfg.contact||{}; if(c.email){const a=document.createElement('a'); a.className='btn'; a.href=`mailto:${c.email}`; a.textContent='📧 Gửi email'; els.contactBtns.appendChild(a)} if(c.phone){const a=document.createElement('a'); a.className='btn'; a.href=`tel:${c.phone}`; a.textContent='📞 Gọi điện'; els.contactBtns.appendChild(a)} if(c.zalo){const a=document.createElement('a'); a.className='btn'; a.href=c.zalo; a.textContent='💬 Zalo'; els.contactBtns.appendChild(a)} if(c.telegram){const a=document.createElement('a'); a.className='btn'; a.href=c.telegram; a.textContent='✈️ Telegram'; els.contactBtns.appendChild(a)}
-    }
-  </script>
 
-  <!-- ===== Firebase SDKs + Realtime loader ===== -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-  <script>
-    // Config của bạn
-    const firebaseConfig = {
-      apiKey: "AIzaSyC0RaG4WHBPRc7mkNrlIz9iezbntxaOVu0",
-      authDomain: "thanhnhabio.firebaseapp.com",
-      projectId: "thanhnhabio",
-      storageBucket: "thanhnhabio.firebasestorage.app",
-      messagingSenderId: "983458728251",
-      appId: "1:983458728251:web:28ac8290b70babe33b8f1e",
-      measurementId: "G-YWLNFZJMFS"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    async function loadRemoteConfigFromFirestore(){
-      try{ const snap=await db.collection('sites').doc('default').get(); return snap.exists? snap.data(): null; }
-      catch(e){ console.error('Firestore read error:',e); return null; }
-    }
-
-    (async function initFirebaseConfig(){
-      const localCfg = (typeof loadConfig==='function')? loadConfig() : {};
-      const remoteCfg = await loadRemoteConfigFromFirestore();
-      const cfgInit = remoteCfg ? { ...DEFAULTS, ...remoteCfg } : { ...DEFAULTS, ...localCfg };
-      if(typeof applyConfig==='function') applyConfig(cfgInit);
-      try{ if(typeof saveConfig==='function') saveConfig(cfgInit); }catch{}
-
-      // Realtime: tự cập nhật khi admin lưu
-      db.collection('sites').doc('default').onSnapshot(snap=>{
-        if(!snap.exists) return;
-        const live={...DEFAULTS, ...snap.data()};
-        if(typeof applyConfig==='function') applyConfig(live);
-        try{ if(typeof saveConfig==='function') saveConfig(live); }catch{}
+      // badges
+      els.badges.innerHTML = '';
+      (cfg.badges||[]).filter(Boolean).slice(0,3).forEach(txt=>{
+        const span=document.createElement('span'); span.className='badge'; span.textContent=txt; els.badges.appendChild(span);
       });
 
-      document.body.classList.add('ready');
+      // links
+      els.links.innerHTML = '';
+      Object.entries(cfg.links||{}).forEach(([k,v])=>{
+        if(!v) return;
+        let url=v, icon=linkIcon(k);
+        if(typeof v==='object' && v.url){ url=v.url; icon=v.icon||linkIcon(k); }
+        let host=''; try{ host=new URL(url).hostname.replace('www.',''); }catch{}
+        const a=document.createElement('a'); a.className='link'; a.href=url; a.target='_blank'; a.rel='noopener';
+        a.innerHTML = `<img loading="lazy" src="${icon}" alt="${k}" width="22" height="22" style="opacity:.9"/> ${k.charAt(0).toUpperCase()+k.slice(1)} <span class='pill'>${host}</span>`;
+        els.links.appendChild(a);
+      });
+
+      // projects
+      els.projects.innerHTML='';
+      (cfg.projects||[]).filter(p=>p && (p.title||p.url)).slice(0,6).forEach(p=>{
+        const a=document.createElement('a'); a.className='project'; a.href=p.url||'#'; a.target='_blank'; a.rel='noopener';
+        a.innerHTML = `<div class="title">${p.title||'Dự án'}</div><div class="desc">${p.desc||''}</div>`;
+        els.projects.appendChild(a);
+      });
+
+      // contact
+      els.contactBtns.innerHTML='';
+      const c = cfg.contact||{};
+      if(c.email){ const a=document.createElement('a'); a.className='btn'; a.href=`mailto:${c.email}`; a.textContent='📧 Gửi email'; els.contactBtns.appendChild(a); }
+      if(c.phone){ const a=document.createElement('a'); a.className='btn'; a.href=`tel:${c.phone}`; a.textContent='📞 Gọi điện'; els.contactBtns.appendChild(a); }
+      if(c.zalo){ const a=document.createElement('a'); a.className='btn'; a.href=c.zalo; a.textContent='💬 Zalo'; els.contactBtns.appendChild(a); }
+      if(c.telegram){ const a=document.createElement('a'); a.className='btn'; a.href=c.telegram; a.textContent='✈️ Telegram'; els.contactBtns.appendChild(a); }
+    }
+
+    // ===== Remote config loader (fix đa thiết bị) =====
+    async function loadRemoteConfig(url){
+      try{
+        const res = await fetch(url + (url.includes('?')?'&':'?') + 'v=' + Date.now(), { cache:'no-store' });
+        if(!res.ok) return null;
+        return await res.json();
+      }catch{ return null; }
+    }
+
+    (async function init(){
+      const localCfg = loadConfig();
+      const params = new URLSearchParams(location.search);
+      const urlParam = params.get('config');
+      const remoteUrl = urlParam || './bio-config.json';
+      const remoteCfg = await loadRemoteConfig(remoteUrl);
+
+      const cfgInit = remoteCfg
+        ? { ...DEFAULTS, ...localCfg, ...remoteCfg }
+        : { ...DEFAULTS, ...localCfg };
+
+      try { applyConfig(cfgInit); } catch(e){ console.error('Apply config failed:', e); }
+      try { saveConfig(cfgInit); } catch {}
     })();
   </script>
 </body>
