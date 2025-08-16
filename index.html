@@ -16,83 +16,30 @@
   <link rel="icon" href="img/bio-icon.png" type="image/png">
 
   <style>
-    /* ========= BASE ========= */
     :root {
-      --bg: #0b0c10;
-      --card: #0e1116;
-      --card-2: #11151b;
-      --muted: #a3aab6;
-      --text: #e6eaf0;
-      --accent: #0ea5e9; 
-      --ring: rgba(14,165,233,.28);
-      --ok: #10b981;
-      --shadow: 0 12px 40px rgba(0,0,0,.35);
-      --radius: 18px;
+      --bg: #0b0c10; --card: #0e1116; --card-2: #11151b;
+      --muted: #a3aab6; --text: #e6eaf0; --accent: #0ea5e9; --ring: rgba(14,165,233,.28);
+      --ok: #10b981; --shadow: 0 12px 40px rgba(0,0,0,.35); --radius: 18px;
     }
+    .theme-light { --bg:#f7f8fb; --card:#ffffff; --card-2:#f6f8ff; --muted:#445063; --text:#0f172a; --accent:#0ea5e9; --ring:rgba(14,165,233,.22); --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --grid-bg: radial-gradient(900px 900px at 110% -10%, rgba(14,165,233,.10), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(34,197,94,.08), transparent 60%); }
+    .theme-dark { --bg:#0b0c10; --card:#0e1116; --card-2:#11151b; --muted:#a3aab6; --text:#e6eaf0; --accent:#14b8a6; --ring:rgba(20,184,166,.28); --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --grid-bg: radial-gradient(1200px 1200px at 110% -10%, rgba(20,184,166,.10), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(14,165,233,.10), transparent 60%); }
+    .theme-pastel { --bg:#fff1f2; --card:#ffffff; --card-2:#fff7fb; --muted:#6b7280; --text:#111827; --accent:#a78bfa; --ring:rgba(167,139,250,.25); --shadow: 0 12px 30px rgba(168,85,247,.12);
+      --grid-bg: radial-gradient(900px 900px at 100% -10%, rgba(244,114,182,.18), transparent 60%), radial-gradient(700px 700px at -10% 110%, rgba(167,139,250,.20), transparent 60%); }
+    .theme-gradient { --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9); --muted:#cbd5e1; --text:#f8fafc; --accent:#60a5fa; --ring:rgba(96,165,250,.35); --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --grid-bg: radial-gradient(1400px 1000px at 120% -20%, rgba(96,165,250,.25), transparent 60%), radial-gradient(1100px 900px at -10% 120%, rgba(167,139,250,.25), transparent 60%), linear-gradient(135deg, #0b1220 0%, #0b0c10 40%, #0b0c10 100%); }
 
-    /* ========= THEMES ========= */
-    .theme-light {
-      --bg:#f7f8fb; --card:#ffffff; --card-2:#f6f8ff;
-      --muted:#445063; --text:#0f172a; --accent:#0ea5e9; --ring:rgba(14,165,233,.22);
-      --shadow: 0 10px 30px rgba(2,6,23,.08);
-      --grid-bg: radial-gradient(900px 900px at 110% -10%, rgba(14,165,233,.10), transparent 60%),
-                 radial-gradient(700px 700px at -10% 110%, rgba(34,197,94,.08), transparent 60%);
-    }
-    .theme-dark {
-      --bg:#0b0c10; --card:#0e1116; --card-2:#11151b;
-      --muted:#a3aab6; --text:#e6eaf0; --accent:#14b8a6; --ring:rgba(20,184,166,.28);
-      --shadow: 0 12px 40px rgba(0,0,0,.35);
-      --grid-bg: radial-gradient(1200px 1200px at 110% -10%, rgba(20,184,166,.10), transparent 60%),
-                 radial-gradient(900px 900px at -10% 110%, rgba(14,165,233,.10), transparent 60%);
-    }
-    .theme-pastel {
-      --bg:#fff1f2; --card:#ffffff; --card-2:#fff7fb;
-      --muted:#6b7280; --text:#111827; --accent:#a78bfa; --ring:rgba(167,139,250,.25);
-      --shadow: 0 12px 30px rgba(168,85,247,.12);
-      --grid-bg: radial-gradient(900px 900px at 100% -10%, rgba(244,114,182,.18), transparent 60%),
-                 radial-gradient(700px 700px at -10% 110%, rgba(167,139,250,.20), transparent 60%);
-    }
-    .theme-gradient {
-      --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9);
-      --muted:#cbd5e1; --text:#f8fafc; --accent:#60a5fa; --ring:rgba(96,165,250,.35);
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --grid-bg:
-        radial-gradient(1400px 1000px at 120% -20%, rgba(96,165,250,.25), transparent 60%),
-        radial-gradient(1100px 900px at -10% 120%, rgba(167,139,250,.25), transparent 60%),
-        linear-gradient(135deg, #0b1220 0%, #0b0c10 40%, #0b0c10 100%);
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-      background: var(--grid-bg, radial-gradient(1200px 1200px at 110% -10%, rgba(14,165,233,.08), transparent 60%),
-                                 radial-gradient(900px 900px at -10% 110%, rgba(34,197,94,.08), transparent 60%)),
-                  var(--bg);
-    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{ margin:0; color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background: var(--grid-bg, radial-gradient(1200px 1200px at 110% -10%, rgba(14,165,233,.08), transparent 60%), radial-gradient(900px 900px at -10% 110%, rgba(34,197,94,.08), transparent 60%)), var(--bg); }
     .container{max-width:1080px;margin:auto;padding:28px}
 
-    /* ========= HERO ========= */
-    .hero{
-      position:relative; overflow:hidden; border-radius:var(--radius);
-      padding:28px; background:
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent),
-        var(--card);
-      border:1px solid rgba(148,163,184,.14);
-      box-shadow: var(--shadow);
-      display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center;
-    }
-    .hero::before{
-      content:""; position:absolute; inset:-1px;
-      background: radial-gradient(1400px 1400px at 120% -20%, var(--ring), transparent 50%);
-      pointer-events:none;
-    }
-    .avatar{
-      width:104px; height:104px; border-radius:24px; overflow:hidden; flex:0 0 104px;
-      border:1px solid rgba(148,163,184,.18); background:#0b0c10; position:relative;
-      box-shadow: 0 0 0 6px rgba(14,165,233,.08), 0 0 40px rgba(14,165,233,.12);
-    }
+    .hero{ position:relative; overflow:hidden; border-radius:var(--radius); padding:28px; background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card);
+      border:1px solid rgba(148,163,184,.14); box-shadow: var(--shadow); display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center; }
+    .hero::before{ content:""; position:absolute; inset:-1px; background: radial-gradient(1400px 1400px at 120% -20%, var(--ring), transparent 50%); pointer-events:none; }
+    .avatar{ width:104px; height:104px; border-radius:24px; overflow:hidden; flex:0 0 104px; border:1px solid rgba(148,163,184,.18); background:#0b0c10; position:relative;
+      box-shadow: 0 0 0 6px rgba(14,165,233,.08), 0 0 40px rgba(14,165,233,.12); }
     .avatar img{width:100%;height:100%;object-fit:cover; display:block}
     .who{display:flex; flex-direction:column; gap:8px; min-width:0}
     .name{font-size:1.9rem; font-weight:800; line-height:1.1; letter-spacing:-.02em; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
@@ -101,70 +48,34 @@
     .badges{display:flex; flex-wrap:wrap; gap:8px}
     .badge{padding:8px 10px; border-radius:999px; border:1px solid rgba(148,163,184,.18); background:rgba(148,163,184,.06); font-weight:500}
 
-    /* ========= GRID ========= */
     .grid{display:grid; grid-template-columns:320px 1fr; gap:18px; margin-top:18px}
     @media (max-width:980px){ .grid{grid-template-columns:1fr} }
-    .card{
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent),
-        var(--card);
-      border:1px solid rgba(148,163,184,.14);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-    }
+    .card{ background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card); border:1px solid rgba(148,163,184,.14); border-radius:var(--radius); box-shadow: var(--shadow) }
     .section{padding:18px}
     .section h2{font-size:1.05rem; margin:0 0 10px 2px; opacity:.95; letter-spacing:.02em}
 
-    /* ========= LINKS ========= */
     .links{display:flex; flex-direction:column; gap:12px}
-    .link{
-      display:flex; align-items:center; gap:12px;
-      padding:14px 14px; border-radius:14px;
-      border:1px solid rgba(148,163,184,.16);
-      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
-      text-decoration:none; color:inherit;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease, background .2s ease;
-    }
+    .link{ display:flex; align-items:center; gap:12px; padding:14px 14px; border-radius:14px; border:1px solid rgba(148,163,184,.16); background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+      text-decoration:none; color:inherit; transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease, background .2s ease; }
     .link:hover{ transform:translateY(-1px); box-shadow:0 10px 24px var(--ring); border-color:var(--ring) }
     .link svg{ width:22px; height:22px; opacity:.9 }
     .pill{ margin-left:auto; font-size:.85rem; color:var(--muted) }
-
-    /* icon ảnh cho liên kết nhanh */
-    .link .icon-img{
-      width:22px; height:22px; border-radius:6px; flex:0 0 22px;
-      object-fit:cover; border:1px solid rgba(148,163,184,.18); background:#0000
-    }
+    .link .icon-img{ width:22px; height:22px; border-radius:6px; flex:0 0 22px; object-fit:cover; border:1px solid rgba(148,163,184,.18); background:#0000 }
     .link .icon-wrap{ display:flex; align-items:center; gap:12px }
 
-    /* ========= CONTENT ========= */
-    .prose{line-height:1.7}
-    .prose p{margin:0}
-    .prose p + p{margin-top:10px}
-
-    .projects{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:14px;
-    }
+    .prose{line-height:1.7} .prose p{margin:0} .prose p + p{margin-top:10px}
+    .projects{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; }
     @media (max-width:980px){ .projects{grid-template-columns:repeat(2, minmax(0,1fr));} }
     @media (max-width:640px){ .projects{grid-template-columns:1fr;} }
-    .project{
-      padding:16px; border:1px solid rgba(148,163,184,.16);
-      border-radius:14px; text-decoration:none; color:inherit;
-      display:flex; flex-direction:column; gap:8px;
-      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card-2);
-      transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease;
-    }
+    .project{ padding:16px; border:1px solid rgba(148,163,184,.16); border-radius:14px; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:8px;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card-2); transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease; }
     .project:hover{ transform:translateY(-1px); box-shadow:0 10px 24px var(--ring); border-color:var(--ring) }
-    .project .title{font-weight:700; letter-spacing:.01em}
-    .project .desc{color:var(--muted); font-size:.95rem}
+    .project .title{font-weight:700; letter-spacing:.01em} .project .desc{color:var(--muted); font-size:.95rem}
 
     .contact{display:flex; flex-wrap:wrap; gap:12px}
-    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 14px;
-      border-radius:12px; border:1px solid rgba(148,163,184,.22);
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.22);
       background:linear-gradient(180deg, rgba(255,255,255,.02), transparent); text-decoration:none; color:inherit}
     .btn:hover{border-color:var(--ring); box-shadow:0 8px 20px var(--ring)}
-
     footer{padding:18px; text-align:center; color:var(--muted)}
     .sr{position:absolute;width:1px;height:1px;clip:rect(1px,1px,1px,1px);overflow:hidden;white-space:nowrap}
   </style>
@@ -173,7 +84,6 @@
   <a class="sr" href="#main">Bỏ qua để vào nội dung chính</a>
 
   <div class="container" id="main">
-    <!-- HERO -->
     <section class="hero">
       <div class="avatar">
         <img id="avatar" src="https://picsum.photos/300?grayscale" alt="Ảnh đại diện" loading="lazy"/>
@@ -195,9 +105,7 @@
       </div>
     </section>
 
-    <!-- GRID -->
     <div class="grid" aria-live="polite">
-      <!-- Links -->
       <aside class="card">
         <div class="section">
           <h2>Liên kết nhanh</h2>
@@ -205,7 +113,6 @@
         </div>
       </aside>
 
-      <!-- Main content -->
       <main class="card">
         <div class="section">
           <h2>Giới thiệu</h2>
@@ -227,13 +134,10 @@
       </main>
     </div>
 
-    <footer>
-      © <span id="year"></span> <span id="footerName">Your Name</span> — Made with ❤️ in Việt Nam
-    </footer>
+    <footer>© <span id="year"></span> <span id="footerName">Your Name</span> — Made with ❤️ in Việt Nam</footer>
   </div>
 
   <script>
-    /* ===== Utilities & State ===== */
     const yearEl = document.getElementById('year');
     const footerName = document.getElementById('footerName');
     yearEl.textContent = new Date().getFullYear();
@@ -261,7 +165,6 @@
       theme: 'dark',
       bio: 'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',
       badges: ['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],
-      // links: có thể là string hoặc { url, icon }
       links: { facebook:'', instagram:'', github:'', website:'', youtube:'', tiktok:'', zalo:'', telegram:'' },
       projects: [
         { title:'Chronos Mini — Đồng hồ ESP32-S3', url:'#', desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.' },
@@ -303,20 +206,14 @@
       };
       return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${map[key]||map.website}</svg>`
     }
-
     function linkIconElement(key, customIconUrl){
       if (customIconUrl) {
         const img = document.createElement('img');
-        img.className = 'icon-img';
-        img.alt = key + ' icon';
-        img.referrerPolicy = 'no-referrer';
-        img.decoding = 'async';
-        img.loading = 'lazy';
-        img.src = customIconUrl;
+        img.className = 'icon-img'; img.alt = key + ' icon'; img.referrerPolicy = 'no-referrer';
+        img.decoding = 'async'; img.loading = 'lazy'; img.src = customIconUrl;
         return img;
       }
-      const span = document.createElement('span');
-      span.innerHTML = linkIcon(key);
+      const span = document.createElement('span'); span.innerHTML = linkIcon(key);
       return span.firstElementChild || span;
     }
 
@@ -326,8 +223,7 @@
         case 'light': document.body.classList.add('theme-light'); break;
         case 'pastel': document.body.classList.add('theme-pastel'); break;
         case 'gradient': document.body.classList.add('theme-gradient'); break;
-        case 'dark':
-        default: document.body.classList.add('theme-dark'); break;
+        case 'dark': default: document.body.classList.add('theme-dark'); break;
       }
     }
 
@@ -343,7 +239,6 @@
 
       const nameToUse = cfg.name || DEFAULTS.name;
       updateHeadName(nameToUse);
-
       els.name.textContent = nameToUse;
       footerName.textContent = nameToUse;
       els.role.textContent = cfg.role || '';
@@ -364,7 +259,7 @@
         const span=document.createElement('span'); span.className='badge'; span.textContent=txt; els.badges.appendChild(span);
       });
 
-      // links (hỗ trợ string hoặc {url, icon})
+      // links (string hoặc { url, icon })
       els.links.innerHTML = '';
       Object.entries(cfg.links||{}).forEach(([k,v])=>{
         const item = (typeof v === 'string') ? { url: v } : (v || {});
@@ -401,7 +296,6 @@
       if(c.telegram){ const a=document.createElement('a'); a.className='btn'; a.href=c.telegram; a.textContent='✈️ Telegram'; els.contactBtns.appendChild(a); }
     }
 
-    // Ưu tiên đọc file config từ server nếu có
     async function tryLoadServerConfig(){
       try {
         const res = await fetch(SERVER_CONFIG_URL, { cache:'no-store' });
@@ -410,18 +304,31 @@
         return json && typeof json === 'object' ? json : null;
       } catch { return null; }
     }
-
-    async function initWithPreferServer(){
-      const serverCfg = await tryLoadServerConfig();
+    function getQueryFlag(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name);
+    }
+    async function initWithPreferServerOrLocal(){
+      const isPreview = getQueryFlag('preview') === '1';
       const localCfg  = loadConfig();
+
+      if (isPreview) {
+        const cfg = localCfg || {...DEFAULTS};
+        setTheme(cfg.theme || DEFAULTS.theme);
+        setAccent(cfg.accent || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9');
+        applyConfig(cfg);
+        return;
+      }
+
+      const serverCfg = await tryLoadServerConfig();
       const cfg = serverCfg || localCfg || {...DEFAULTS};
       setTheme(cfg.theme || DEFAULTS.theme);
       setAccent(cfg.accent || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9');
       applyConfig(cfg);
     }
 
-    // ===== Init =====
-    initWithPreferServer();
+    // Init
+    initWithPreferServerOrLocal();
   </script>
 </body>
 </html>
