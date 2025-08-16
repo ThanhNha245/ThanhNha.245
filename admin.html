@@ -9,12 +9,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="img/bio-icon.png" type="image/png">
+
 <style>
   :root { --accent:#60a5fa; --ring:rgba(96,165,250,.35) }
   .theme-light{ --bg:#f7f8fb; --card:#ffffff; --card-2:#f4f6ff; --text:#0f172a; --muted:#556075; --shadow:0 10px 28px rgba(2,6,23,.08) }
   .theme-dark{ --bg:#0b0c10; --card:#111317; --card-2:#141821; --text:#e6eaf0; --muted:#a3aab6; --shadow:0 14px 40px rgba(0,0,0,.35) }
   .theme-pastel{ --bg:#fff1f3; --card:#ffffff; --card-2:#fff7fb; --text:#111827; --muted:#6b7280; --shadow:0 12px 30px rgba(168,85,247,.12) }
   .theme-gradient{ --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9); --text:#f8fafc; --muted:#cbd5e1; --shadow:0 20px 60px rgba(0,0,0,.45) }
+
   *{box-sizing:border-box}html,body{height:100%}
   body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg)}
   .app{max-width:1200px;margin:auto;padding:18px 22px}
@@ -80,7 +82,10 @@
           <div class="form">
             <div><label>Theme</label>
               <select id="themeSelect">
-                <option value="light">Light</option><option value="dark">Dark</option><option value="pastel">Pastel</option><option value="gradient">Gradient</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="pastel">Pastel</option>
+                <option value="gradient">Gradient</option>
               </select>
             </div>
             <div><label>Accent</label><input id="accent" type="color" value="#60a5fa"/></div>
@@ -92,7 +97,7 @@
               <button id="btnAppearanceSave" class="btn btn-primary" type="button">Lưu</button>
             </div>
           </div>
-          <div class="note" style="margin-top:6px">Theme & accent lưu trong config → index.html đọc để đồng bộ màu.</div>
+          <div class="note" style="margin-top:6px">Theme & accent lưu trong config → index.html đọc và áp dụng để **đồng bộ màu**.</div>
         </section>
 
         <section data-pane="profile" hidden>
@@ -111,8 +116,9 @@
                 <small class="muted">PNG/JPG • ≤ 1.5MB</small>
               </div>
               <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
-                <img id="avatarPreview" alt="Xem trước avatar" style="width:64px;height:64px;border-radius:12px;object-fit:cover;border:1px solid rgba(148,163,184,.25);background:#0001"/>
-                <small class="muted">Ảnh chọn sẽ tự điền vào ô “Avatar URL” dạng Data URL.</small>
+                <img id="avatarPreview" alt="Xem trước avatar"
+                          style="width:64px;height:64px;border-radius:12px;object-fit:cover;border:1px solid rgba(148,163,184,.25);background:#0001"/>
+                <small class="muted">Ảnh chọn sẽ tự điền vào ô “Avatar URL” dưới dạng Data URL.</small>
               </div>
             </div>
 
@@ -167,14 +173,14 @@
           <h3>↔️ Import / Export</h3>
           <div class="toolbar" style="margin-bottom:8px">
             <button id="btnApply" class="btn" type="button">Áp dụng (local)</button>
-            <button id="btnSave" class="btn btn-primary" type="button">Lưu (local + Firestore)</button>
+            <button id="btnSave" class="btn btn-primary" type="button">Lưu (local)</button>
             <button id="btnReset" class="btn btn-danger" type="button">Khôi phục mặc định</button>
           </div>
           <div class="toolbar" style="margin-bottom:8px">
             <button id="btnExport" class="btn" type="button">Copy JSON</button>
             <button id="btnImport" class="btn" type="button">Import JSON</button>
             <button id="btnExportConfigFile" class="btn" type="button">Xuất file cấu hình</button>
-            <button id="btnLoadRemote" class="btn" type="button">Nạp từ Firestore</button>
+            <button id="btnLoadRemote" class="btn" type="button">Nạp từ bio-config.json</button>
             <button id="btnImportFile" class="btn" type="button">Import từ file</button>
             <input id="importFile" type="file" accept="application/json" style="display:none">
           </div>
@@ -195,12 +201,11 @@
   </div>
 </div>
 
-<!-- Modal đăng nhập -->
 <div id="loginModal" style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:60">
   <div style="background:var(--card);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:18px;min-width:320px">
     <h3 style="margin-top:0">🔐 Đăng nhập Admin</h3>
     <div style="display:grid;gap:8px">
-      <input id="username" placeholder="Email Firebase"/>
+      <input id="username" placeholder="Tên đăng nhập"/>
       <input id="password" type="password" placeholder="Mật khẩu"/>
       <div style="display:flex;gap:8px;justify-content:flex-end"><button id="btnLogin" class="btn btn-primary">Đăng nhập</button><button id="btnCloseLogin" class="btn">Hủy</button></div>
     </div>
@@ -210,84 +215,218 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-  const STORAGE_KEY='bioConfig_v1'; const HISTORY_KEY='bioHistory_v1'; const AVATAR_MAX_BYTES=1.5*1024*1024;
+  const STORAGE_KEY='bioConfig_v1';
+  const ADMIN_KEY='bioAdmin_v1';
+  const HISTORY_KEY='bioHistory_v1';
+  const AVATAR_MAX_BYTES=1.5*1024*1024;
+
+  // DEMO login — nên thay bằng cơ chế hash nếu repo public
+  const USERNAME='ThanhNha245';
+  const PASSWORD='ThanhNha2405!!@@';
+
   const DEFAULTS={name:'Your Name',role:'Nhà phát triển IoT & Web',city:'HCMC, Việt Nam',avatar:'https://picsum.photos/300?grayscale',openToWork:true,accent:'#60a5fa',theme:'gradient',bio:'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',badges:['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],links:{facebook:'',instagram:'',github:'',website:'',youtube:'',tiktok:'',zalo:'',telegram:''},projects:[{title:'Chronos Mini — Đồng hồ ESP32-S3',url:'#',desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.'},{title:'SmartHome 4-Relay',url:'#',desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.'},{title:'Yahu — Chat • Call • Blog',url:'#',desc:'Webapp full-stack, gọn và nhanh.'}],contact:{email:'you@example.com',phone:'+84',zalo:'',telegram:''}};
-  const $=s=>document.querySelector(s); const $$=s=>Array.from(document.querySelectorAll(s));
+
+  const $=s=>document.querySelector(s);
+  const $$=s=>Array.from(document.querySelectorAll(s));
   function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
-  function applyTheme(theme,accent){document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');const t=['light','dark','pastel','gradient'].includes(theme)?theme:'dark';document.body.classList.add('theme-'+t);const ac=accent||'#0ea5e9';document.documentElement.style.setProperty('--accent',ac);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',ac);}
+
+  function applyTheme(theme,accent){
+    document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');
+    const t=['light','dark','pastel','gradient'].includes(theme)?theme:'dark';
+    document.body.classList.add('theme-'+t);
+    const ac=accent||'#0ea5e9';
+    document.documentElement.style.setProperty('--accent',ac);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content',ac);
+  }
+
   function loadConfig(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{...DEFAULTS}}catch{return {...DEFAULTS}}}
   function saveConfig(cfg){localStorage.setItem(STORAGE_KEY,JSON.stringify(cfg))}
   function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return []}}
   function saveHistory(list){localStorage.setItem(HISTORY_KEY,JSON.stringify(list.slice(-50)))}
-  function addHistory(action,cfg){const list=loadHistory();list.push({t:Date.now(),action:String(action||'save'),cfg:cfg&&typeof cfg==='object'?cfg:{}});saveHistory(list);renderHistory()}
-  function toValidDate(t){if(t instanceof Date&&!isNaN(t))return t;if(typeof t==='number'&&isFinite(t))return new Date(t);if(typeof t==='string'&&/^\d+$/.test(t))return new Date(Number(t));const d=new Date(t);if(!isNaN(d))return d;return null}
-  function renderHistory(){const wrap=$('#historyList');if(!wrap)return;let list;try{list=JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{list=[]}const norm=[];for(const it of list){if(!it||typeof it!=='object')continue;const when=toValidDate(it.t??it.time??it.date);const cfg=(it.cfg&&typeof it.cfg==='object')?it.cfg:null;if(!when||!cfg)continue;norm.push({t:when.getTime(),action:String(it.action||'save'),cfg});}const rebuilt=JSON.stringify(norm);if((localStorage.getItem(HISTORY_KEY)||'[]')!==rebuilt)localStorage.setItem(HISTORY_KEY,rebuilt);if(!norm.length){wrap.innerHTML='<div class="muted">Chưa có lịch sử.</div>';return;}wrap.innerHTML=norm.map((it,i)=>{const d=new Date(it.t);const stamp=new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(d);return `<div class="history-item"><div><strong>${stamp}</strong> — ${it.action}</div><div class="toolbar"><button class="btn" data-view="${i}">Xem</button><button class="btn" data-restore="${i}">Khôi phục</button></div></div>`}).join('');wrap.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',e=>{const idx=+e.currentTarget.dataset.view;const entry=norm[idx];const ioBox=$('#ioBox');if(ioBox&&entry?.cfg){ioBox.value=JSON.stringify(entry.cfg,null,2)}showTab('io')}));wrap.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',e=>{const idx=+e.currentTarget.dataset.restore;const entry=norm[idx];if(entry?.cfg&&confirm('Khôi phục cấu hình này?')){localStorage.setItem(STORAGE_KEY,JSON.stringify(entry.cfg));fill(entry.cfg);toast('Đã khôi phục cấu hình.');}}));}
 
-  const navButtons=$$('.nav .btn'); const panes=$$('[data-pane]'); function showTab(id){panes.forEach(p=>p.hidden=p.getAttribute('data-pane')!==id);navButtons.forEach(b=>b.classList.toggle('active',b.dataset.tab===id))} navButtons.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+  function addHistory(action,cfg){
+    const list=loadHistory();
+    list.push({t:Date.now(),action:String(action||'save'),cfg:cfg&&typeof cfg==='object'?cfg:{}});
+    saveHistory(list); renderHistory();
+  }
+  function toValidDate(t){
+    if(t instanceof Date&&!isNaN(t))return t;
+    if(typeof t==='number'&&isFinite(t))return new Date(t);
+    if(typeof t==='string'&&/^\d+$/.test(t))return new Date(Number(t));
+    const d=new Date(t); if(!isNaN(d))return d; return null;
+  }
+  function renderHistory(){
+    const wrap=$('#historyList'); if(!wrap)return;
+    let list; try{list=JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{list=[]}
+    const norm=[];
+    for(const it of list){
+      if(!it||typeof it!=='object')continue;
+      const when=toValidDate(it.t??it.time??it.date);
+      const cfg=(it.cfg&&typeof it.cfg==='object')?it.cfg:null;
+      if(!when||!cfg)continue;
+      norm.push({t:when.getTime(),action:String(it.action||'save'),cfg});
+    }
+    const rebuilt=JSON.stringify(norm);
+    if((localStorage.getItem(HISTORY_KEY)||'[]')!==rebuilt)localStorage.setItem(HISTORY_KEY,rebuilt);
+
+    if(!norm.length){wrap.innerHTML='<div class="muted">Chưa có lịch sử.</div>';return;}
+    wrap.innerHTML=norm.map((it,i)=>{
+      const d=new Date(it.t);
+      const stamp=new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(d);
+      return `<div class="history-item">
+        <div><strong>${stamp}</strong> — ${it.action}</div>
+        <div class="toolbar"><button class="btn" data-view="${i}">Xem</button><button class="btn" data-restore="${i}">Khôi phục</button></div>
+      </div>`
+    }).join('');
+    wrap.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',e=>{
+      const idx=+e.currentTarget.dataset.view; const entry=norm[idx]; const ioBox=$('#ioBox');
+      if(ioBox&&entry?.cfg){ioBox.value=JSON.stringify(entry.cfg,null,2)} showTab('io');
+    }));
+    wrap.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',e=>{
+      const idx=+e.currentTarget.dataset.restore; const entry=norm[idx];
+      if(entry?.cfg&&confirm('Khôi phục cấu hình này?')){ localStorage.setItem(STORAGE_KEY,JSON.stringify(entry.cfg)); fill(entry.cfg); toast('Đã khôi phục cấu hình.'); }
+    }));
+  }
+
+  function isAdmin(){return localStorage.getItem(ADMIN_KEY)==='true'}
+  function setAdmin(flag){
+    localStorage.setItem(ADMIN_KEY,flag?'true':'false');
+    $('#adminState').textContent='Admin: '+(flag?'ON':'OFF');
+    $('#btnLogout').style.display=flag?'inline-block':'none';
+    $('#btnOpenLogin').style.display=flag?'none':'inline-block';
+  }
+
+  const navButtons=$$('.nav .btn'); const panes=$$('[data-pane]');
+  function showTab(id){panes.forEach(p=>p.hidden=p.getAttribute('data-pane')!==id); navButtons.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
+  navButtons.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+
   const themeSelect=$('#themeSelect'), accentInput=$('#accent'), openToWorkSel=$('#openToWork');
   const nameInp=$('#name'), roleInp=$('#role'), cityInp=$('#city'), avatarInp=$('#avatar'), bioInp=$('#bio');
-  const avatarFile=$('#avatarFile'), avatarPreview=$('#avatarPreview'); const badge1=$('#badge1'), badge2=$('#badge2'), badge3=$('#badge3');
-  const p1t=$('#p1_title'),p1u=$('#p1_url'),p1d=$('#p1_desc'); const p2t=$('#p2_title'),p2u=$('#p2_url'),p2d=$('#p2_desc'); const p3t=$('#p3_title'),p3u=$('#p3_url'),p3d=$('#p3_desc');
+  const avatarFile=$('#avatarFile'), avatarPreview=$('#avatarPreview');
+  const badge1=$('#badge1'), badge2=$('#badge2'), badge3=$('#badge3');
+  const p1t=$('#p1_title'),p1u=$('#p1_url'),p1d=$('#p1_desc');
+  const p2t=$('#p2_title'),p2u=$('#p2_url'),p2d=$('#p2_desc');
+  const p3t=$('#p3_title'),p3u=$('#p3_url'),p3d=$('#p3_desc');
   const email=$('#email'), phone=$('#phone'), contactZalo=$('#contactZalo'), contactTelegram=$('#contactTelegram');
-  const linkKeys=['facebook','instagram','github','website','youtube','tiktok','zalo','telegram']; const linksForm=$('#linksForm');
-  linksForm.innerHTML=linkKeys.map(k=>`<div class="full" style="display:grid;grid-template-columns:140px 1fr 1fr;gap:8px;align-items:center"><div><label style="display:block;margin-bottom:4px">${k.charAt(0).toUpperCase()+k.slice(1)}</label><img id="${k}_preview" class="icon-preview" alt=""/></div><input id="${k}" placeholder="https://${k}.com/yourid"/><div style="display:flex;gap:8px;align-items:center"><input id="${k}_iconUrl" placeholder="Icon URL (tuỳ chọn)"/><input id="${k}_iconFile" type="file" accept="image/*" style="max-width:180px"/></div></div>`).join('');
-  function linkIcon(key){const map={facebook:`<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,instagram:`<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>`,github:`<path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.11.8-.25.8-.56v-2.02c-3.26.71-3.95-1.57-3.95-1.57-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.6-.3-5.33-1.3-5.33-5.79 0-1.28.46-2.33 1.22-3.16-.12-.3-.53-1.51.12-3.15 0 0 1-.32 3.28 1.21a11.4 11.4 0 0 1 5.98 0c2.28-1.53 3.27-1.21 3.27-1.21.65 1.64.24 2.85.12 3.15.76.83 1.22 1.88 1.22 3.16 0 4.5-2.73 5.49-5.34 5.79.43.37.81 1.1.81 2.23v3.3c0 .31.21.68.81.56A11.5 11.5 0 0 0 12 .5z"/>`,website:`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,youtube:`<path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 0 0-1.95 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 2C5.12 20 12 20 12 20s6.88 0 8.59-.42a2.78 2.78 0 0 0 1.95-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 9.75 8.98 15.5 12 9.75 15.02"/>`,tiktok:`<path d="M12 2v6a6 6 0 1 0 6 6h-3a3 3 0 1 1-3-3V2z"/>`,zalo:`<path d="M4 4h16v16H6l-2 2z"/>`,telegram:`<path d="M21 3L8.5 12.5"/><path d="M21 3l-6 18-4.5-8.5L3 10.5z"/>`}; return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>${map[key]||map.website}</svg>`;}
-  function fill(cfg){applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9'); themeSelect.value=cfg.theme||'dark'; accentInput.value=cfg.accent||'#0ea5e9'; openToWorkSel.value=String(!!cfg.openToWork); nameInp.value=cfg.name||''; roleInp.value=cfg.role||''; cityInp.value=cfg.city||''; avatarInp.value=cfg.avatar||''; if(avatarPreview) avatarPreview.src=cfg.avatar||'https://picsum.photos/100?grayscale'; bioInp.value=(cfg.bio||'').replace(/<br\s*\/?>/gi,'\n'); badge1.value=cfg.badges?.[0]||''; badge2.value=cfg.badges?.[1]||''; badge3.value=cfg.badges?.[2]||''; const L=cfg.links||{}; linkKeys.forEach(k=>{const v=L[k];const iconUrlInp=$(`#${k}_iconUrl`), prev=$(`#${k}_preview`); if(!v){$(`#${k}`).value='';iconUrlInp.value='';prev.src=linkIcon(k);return;} const obj=typeof v==='string'?{url:v}:{...v}; $(`#${k}`).value=obj.url||''; iconUrlInp.value=obj.icon||''; prev.src=obj.icon||linkIcon(k)}); const P=cfg.projects||[]; p1t.value=P[0]?.title||''; p1u.value=P[0]?.url||''; p1d.value=P[0]?.desc||''; p2t.value=P[1]?.title||''; p2u.value=P[1]?.url||''; p2d.value=P[1]?.desc||''; p3t.value=P[2]?.title||''; p3u.value=P[2]?.url||''; p3d.value=P[2]?.desc||''; email.value=cfg.contact?.email||''; phone.value=cfg.contact?.phone||''; contactZalo.value=cfg.contact?.zalo||''; contactTelegram.value=cfg.contact?.telegram||'';}
-  function readAllInto(cfg){cfg.theme=themeSelect.value; cfg.accent=accentInput.value||cfg.accent; cfg.openToWork=openToWorkSel.value==='true'; cfg.name=nameInp.value.trim()||cfg.name; cfg.role=roleInp.value.trim(); cfg.city=cityInp.value.trim(); cfg.avatar=avatarInp.value.trim()||cfg.avatar; cfg.bio=bioInp.value.trim(); cfg.badges=[badge1.value.trim(),badge2.value.trim(),badge3.value.trim()].filter(Boolean); const links={}; linkKeys.forEach(k=>{const url=$(`#${k}`).value.trim(); const iconURL=$(`#${k}_iconUrl`).value.trim(); if(url){links[k]=iconURL?{url,icon:iconURL}:url;}}); cfg.links=links; cfg.projects=[{title:p1t.value.trim(),url:p1u.value.trim(),desc:p1d.value.trim()},{title:p2t.value.trim(),url:p2u.value.trim(),desc:p2d.value.trim()},{title:p3t.value.trim(),url:p3u.value.trim(),desc:p3d.value.trim()}].filter(p=>p.title||p.url||p.desc); cfg.contact={email:email.value.trim(),phone:phone.value.trim(),zalo:contactZalo.value.trim(),telegram:contactTelegram.value.trim()}; return cfg;}
-  function validate(cfg){const errs=[]; if(!cfg.name) errs.push('Thiếu "name".'); if(cfg.accent && !/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cfg.accent)) errs.push('Màu accent không hợp lệ.'); if(cfg.theme && !['light','dark','pastel','gradient'].includes(cfg.theme)) errs.push('Theme không hợp lệ.'); const bad=[]; for(const [k,v] of Object.entries(cfg.links||{})){const u=typeof v==='string'?v:v?.url; const ic=typeof v==='string'?null:v?.icon; try{ if(u) new URL(u) }catch{ bad.push(k) } if(ic && !/^data:image\/|^https?:\/\//i.test(ic)) errs.push(`Icon của ${k} phải là Data URL hoặc URL ảnh.`);} if(bad.length) errs.push('URL không hợp lệ ở: '+bad.join(', ')); return errs;}
-  function applySection(readFn){const cfg=loadConfig(); readFn(cfg); const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- ')); try{applyTheme(cfg.theme,cfg.accent); fill(cfg); toast('Đã áp dụng tạm (chưa lưu).');}catch(e){console.error(e);toast('Không áp dụng được – xem console.');}}
-</script>
 
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-<script>
-  // Dán config Firebase của bạn (giống index.html)
-  const firebaseConfig = {
-    apiKey: "AIzaSyC0RaG4WHBPRc7mkNrlIz9iezbntxaOVu0",
-    authDomain: "thanhnhabio.firebaseapp.com",
-    projectId: "thanhnhabio",
-    storageBucket: "thanhnhabio.firebasestorage.app",
-    messagingSenderId: "983458728251",
-    appId: "1:983458728251:web:28ac8290b70babe33b8f1e",
-    measurementId: "G-YWLNFZJMFS"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth=firebase.auth(); const db=firebase.firestore();
+  const linkKeys=['facebook','instagram','github','website','youtube','tiktok','zalo','telegram'];
+  const linksForm=$('#linksForm');
+  linksForm.innerHTML=linkKeys.map(k=>`
+    <div class="full" style="display:grid;grid-template-columns:140px 1fr 1fr;gap:8px;align-items:center">
+      <div>
+        <label style="display:block;margin-bottom:4px">${k.charAt(0).toUpperCase()+k.slice(1)}</label>
+        <img id="${k}_preview" class="icon-preview" alt=""/>
+      </div>
+      <input id="${k}" placeholder="https://${k}.com/yourid"/>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="${k}_iconUrl" placeholder="Icon URL (tuỳ chọn)"/>
+        <input id="${k}_iconFile" type="file" accept="image/*" style="max-width:180px"/>
+      </div>
+    </div>
+  `).join('');
 
-  function setAdminUI(flag){ $('#adminState').textContent='Admin: '+(flag?'ON':'OFF'); $('#btnLogout').style.display=flag?'inline-block':'none'; $('#btnOpenLogin').style.display=flag?'none':'inline-block'; }
-  auth.onAuthStateChanged(user=>{ setAdminUI(!!user); });
-
-  const loginModal=$('#loginModal');
-  $('#btnOpenLogin').addEventListener('click',()=>{loginModal.style.display='grid';$('#username').focus()});
-  $('#btnCloseLogin').addEventListener('click',()=>loginModal.style.display='none');
-  $('#btnLogin').addEventListener('click',async ()=>{
-    const email=$('#username').value.trim(); const pass=$('#password').value;
-    try{ await auth.signInWithEmailAndPassword(email,pass); loginModal.style.display='none'; toast('Đăng nhập thành công!'); fill(loadConfig()); }
-    catch(e){ console.error(e); toast('Sai email/mật khẩu hoặc user chưa tồn tại.'); }
-  });
-  $('#btnLogout').addEventListener('click',async ()=>{ await auth.signOut(); toast('Đã đăng xuất.'); });
-
-  async function saveToFirestore(cfg){
-    try{
-      const user=auth.currentUser; if(!user){ toast('Bạn cần đăng nhập admin.'); return false; }
-      await db.collection('sites').doc('default').set(cfg,{merge:true});
-      await db.collection('sites').doc('default').collection('history').add({t:Date.now(),action:'save',by:user.email||user.uid,cfg});
-      return true;
-    }catch(e){ console.error('Firestore write error:',e); toast('Lỗi ghi Firestore. Xem console.'); return false; }
+  function linkIcon(key){
+    const map = {
+      facebook:`<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,
+      instagram:`<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>`,
+      github:`<path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.11.8-.25.8-.56v-2.02c-3.26.71-3.95-1.57-3.95-1.57-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.6-.3-5.33-1.3-5.33-5.79 0-1.28.46-2.33 1.22-3.16-.12-.3-.53-1.51.12-3.15 0 0 1-.32 3.28 1.21a11.4 11.4 0 0 1 5.98 0c2.28-1.53 3.27-1.21 3.27-1.21.65 1.64.24 2.85.12 3.15.76.83 1.22 1.88 1.22 3.16 0 4.5-2.73 5.49-5.34 5.79.43.37.81 1.1.81 2.23v3.3c0 .31.21.68.81.56A11.5 11.5 0 0 0 12 .5z"/>`,
+      website:`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,
+      youtube:`<path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 0 0-1.95 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 2C5.12 20 12 20 12 20s6.88 0 8.59-.42a2.78 2.78 0 0 0 1.95-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 9.75 8.98 15.5 12 9.75 15.02"/>`,
+      tiktok:`<path d="M12 2v6a6 6 0 1 0 6 6h-3a3 3 0 1 1-3-3V2z"/>`,
+      zalo:`<path d="M4 4h16v16H6l-2 2z"/>`,
+      telegram:`<path d="M21 3L8.5 12.5"/><path d="M21 3l-6 18-4.5-8.5L3 10.5z"/>`
+    };
+    return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>${map[key] || map.website}</svg>`;
   }
-  async function saveSection(readFn){
-    if(!auth.currentUser) return toast('Bạn cần đăng nhập admin.');
-    const cfg=loadConfig(); readFn(cfg);
+
+  function fill(cfg){
+    applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9');
+    themeSelect.value=cfg.theme||'dark'; accentInput.value=cfg.accent||'#0ea5e9'; openToWorkSel.value=String(!!cfg.openToWork);
+
+    nameInp.value=cfg.name||''; roleInp.value=cfg.role||''; cityInp.value=cfg.city||'';
+    avatarInp.value=cfg.avatar||''; if(avatarPreview) avatarPreview.src=cfg.avatar||'https://picsum.photos/100?grayscale';
+    bioInp.value=(cfg.bio||'').replace(/<br\s*\/?>/gi,'\n');
+
+    badge1.value=cfg.badges?.[0]||''; badge2.value=cfg.badges?.[1]||''; badge3.value=cfg.badges?.[2]||'';
+
+    const L=cfg.links||{};
+    linkKeys.forEach(k=>{
+      const v=L[k];
+      const iconUrlInp=$(`#${k}_iconUrl`), prev=$(`#${k}_preview`);
+      if(!v){$(`#${k}`).value='';iconUrlInp.value='';prev.src=linkIcon(k);return;}
+      const obj=typeof v==='string'?{url:v}:{...v};
+      $(`#${k}`).value=obj.url||'';
+      iconUrlInp.value=obj.icon||'';
+      prev.src=obj.icon||linkIcon(k);
+    });
+
+    const P=cfg.projects||[];
+    p1t.value=P[0]?.title||''; p1u.value=P[0]?.url||''; p1d.value=P[0]?.desc||'';
+    p2t.value=P[1]?.title||''; p2u.value=P[1]?.url||''; p2d.value=P[1]?.desc||'';
+    p3t.value=P[2]?.title||''; p3u.value=P[2]?.url||''; p3d.value=P[2]?.desc||'';
+
+    email.value=cfg.contact?.email||''; phone.value=cfg.contact?.phone||'';
+    contactZalo.value=cfg.contact?.zalo||''; contactTelegram.value=cfg.contact?.telegram||'';
+  }
+
+  function readAllInto(cfg){
+    cfg.theme=themeSelect.value; cfg.accent=accentInput.value||cfg.accent; cfg.openToWork=openToWorkSel.value==='true';
+    cfg.name=nameInp.value.trim()||cfg.name; cfg.role=roleInp.value.trim(); cfg.city=cityInp.value.trim();
+    cfg.avatar=avatarInp.value.trim()||cfg.avatar;
+    cfg.bio=bioInp.value.trim();
+    cfg.badges=[badge1.value.trim(),badge2.value.trim(),badge3.value.trim()].filter(Boolean);
+    const links={}; linkKeys.forEach(k=>{
+      const url=$(`#${k}`).value.trim();
+      const iconURL=$(`#${k}_iconUrl`).value.trim();
+      if(url){
+        links[k]=iconURL?{url,icon:iconURL}:url;
+      }
+    });
+    cfg.links=links;
+    cfg.projects=[{title:p1t.value.trim(),url:p1u.value.trim(),desc:p1d.value.trim()},{title:p2t.value.trim(),url:p2u.value.trim(),desc:p2d.value.trim()},{title:p3t.value.trim(),url:p3u.value.trim(),desc:p3d.value.trim()}].filter(p=>p.title||p.url||p.desc);
+    cfg.contact={email:email.value.trim(),phone:phone.value.trim(),zalo:contactZalo.value.trim(),telegram:contactTelegram.value.trim()};
+    return cfg;
+  }
+
+  function validate(cfg){
+    const errs=[];
+    if(!cfg.name) errs.push('Thiếu "name".');
+    if(cfg.accent && !/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cfg.accent)) errs.push('Màu accent không hợp lệ.');
+    if(cfg.theme && !['light','dark','pastel','gradient'].includes(cfg.theme)) errs.push('Theme không hợp lệ.');
+    const bad=[];
+    for(const [k,v] of Object.entries(cfg.links||{})){
+      const u=typeof v==='string'?v:v?.url; const ic=typeof v==='string'?null:v?.icon;
+      try{ if(u) new URL(u) }catch{ bad.push(k) }
+      if(ic && !/^data:image\/|^https?:\/\//i.test(ic)) errs.push(`Icon của ${k} phải là Data URL hoặc URL ảnh.`);
+    }
+    if(bad.length) errs.push('URL không hợp lệ ở: ' + bad.join(', '));
+    return errs;
+  }
+
+  // ====== FIX: Thêm applySection và chỉ giữ 1 saveSection ======
+  function applySection(readFn){
+    const cfg = loadConfig();
+    readFn(cfg);
+    const errs = validate(cfg);
+    if (errs.length){ toast('Lỗi:\n- ' + errs.join('\n- ')); return; }
+    try{ applyTheme(cfg.theme,cfg.accent); fill(cfg); toast('Đã áp dụng tạm (chưa lưu).'); }
+    catch(e){ console.error(e); toast('Không áp dụng được – xem console.'); }
+  }
+  function saveSection(readFn){
+    if(!isAdmin()) return toast('Bạn cần đăng nhập admin.');
+    const cfg = loadConfig(); readFn(cfg);
     const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
-    try{ saveConfig(cfg); addHistory('save',cfg); const ok=await saveToFirestore(cfg); toast(ok?'Đã lưu (local + Firestore).':'Đã lưu local, Firestore lỗi.'); }
-    catch(e){ if(e.name==='QuotaExceededError') toast('Vượt dung lượng lưu trữ. Nén ảnh hoặc xóa lịch sử.'); else {console.error(e); toast('Lỗi khi lưu.');} }
+    try{ saveConfig(cfg); addHistory('save',cfg); toast('Đã lưu (local).'); }
+    catch(e){
+      if(e.name==='QuotaExceededError') toast('Lỗi: Vượt quá dung lượng lưu trữ. Vui lòng nén ảnh hoặc xóa lịch sử.');
+      else { console.error(e); toast('Lỗi khi lưu. Kiểm tra console.'); }
+    }
   }
 
-  // Bind buttons
+  // ===== Buttons =====
   $('#btnAppearanceApply').addEventListener('click',()=>applySection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true';}));
   $('#btnAppearanceSave').addEventListener('click',()=>saveSection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true';}));
+
   $('#btnProfileApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnProfileSave').addEventListener('click',()=>saveSection(readAllInto));
   $('#btnLinksApply').addEventListener('click',()=>applySection(readAllInto));
@@ -296,24 +435,108 @@
   $('#btnProjectsSave').addEventListener('click',()=>saveSection(readAllInto));
   $('#btnContactApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnContactSave').addEventListener('click',()=>saveSection(readAllInto));
+
+  // IO
   $('#btnApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnSave').addEventListener('click',()=>saveSection(readAllInto));
-  $('#btnReset').addEventListener('click',()=>{ if(!auth.currentUser) return toast('Bạn cần đăng nhập admin.'); if(confirm('Khôi phục mặc định?')){ saveConfig(DEFAULTS); fill(DEFAULTS); addHistory('reset',DEFAULTS); toast('Đã khôi phục mặc định (local).'); }});
-  $('#btnExport').addEventListener('click',async ()=>{ const s=JSON.stringify(loadConfig(),null,2); $('#ioBox').value=s; try{ await navigator.clipboard.writeText(s); toast('Đã copy JSON vào clipboard.'); }catch{ $('#ioBox').select(); document.execCommand('copy'); toast('Đã copy (fallback).'); }});
-  $('#btnImport').addEventListener('click',()=>{ if(!auth.currentUser) return toast('Bạn cần đăng nhập admin.'); try{ const cfg=JSON.parse($('#ioBox').value); const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); fill(cfg); addHistory('import',cfg); toast('Đã import & áp dụng (local).'); }catch{ toast('JSON không hợp lệ.'); }});
-  $('#btnExportConfigFile').addEventListener('click',()=>{ const blob=new Blob([JSON.stringify(loadConfig(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='bio-config.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href); });
-  async function fetchRemoteAndApply(){ try{ const snap=await db.collection('sites').doc('default').get(); if(!snap.exists) return toast('Chưa có cấu hình trên Firestore.'); const cfg=snap.data(); const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); fill(cfg); addHistory('load-remote',cfg); toast('Đã nạp & áp dụng từ Firestore.'); }catch{ toast('Lỗi tải cấu hình Firestore.'); } }
-  $('#btnLoadRemote').addEventListener('click',fetchRemoteAndApply);
-  $('#btnImportFile').addEventListener('click',()=>$('#importFile').click());
-  $('#importFile').addEventListener('change',e=>{const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const cfg=JSON.parse(r.result); const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- ')); saveConfig(cfg); fill(cfg); addHistory('import-file',cfg); toast('Đã import từ file (local).'); }catch{ toast('File JSON không hợp lệ.'); } }; r.readAsText(f);});
+  $('#btnReset').addEventListener('click',()=>{
+    if(!isAdmin()) return toast('Bạn cần đăng nhập admin.');
+    if(confirm('Khôi phục mặc định?')){
+      saveConfig(DEFAULTS); fill(DEFAULTS); addHistory('reset',DEFAULTS); toast('Đã khôi phục mặc định.');
+    }
+  });
+  // Copy JSON: ưu tiên Clipboard API, fallback execCommand
+  $('#btnExport').addEventListener('click', async ()=>{
+    const s=JSON.stringify(loadConfig(),null,2);
+    $('#ioBox').value=s;
+    try{ await navigator.clipboard.writeText(s); toast('Đã copy JSON vào clipboard.'); }
+    catch{ $('#ioBox').select(); document.execCommand('copy'); toast('Đã copy (fallback).'); }
+  });
+  $('#btnImport').addEventListener('click',()=>{
+    if(!isAdmin()) return toast('Bạn cần đăng nhập admin.');
+    try{
+      const cfg=JSON.parse($('#ioBox').value); const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
+      saveConfig(cfg); fill(cfg); addHistory('import',cfg); toast('Đã import & áp dụng.');
+    }catch{ toast('JSON không hợp lệ.'); }
+  });
+  $('#btnExportConfigFile').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify(loadConfig(),null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bio-config.json';
+    document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
+  });
 
-  // Links icon upload
-  linkKeys.forEach(k=>{ const file=$(`#${k}_iconFile`), urlInp=$(`#${k}_iconUrl`), preview=$(`#${k}_preview`); file.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0]; if(!f) return; if(!f.type.startsWith('image/')) return toast('Chỉ chấp nhận ảnh.'); if(f.size>150*1024) return toast('Icon >150KB. Vui lòng nén nhỏ hơn.'); const r=new FileReader(); r.onload=()=>{ urlInp.value=r.result; preview.src=r.result; toast('Đã tải icon. Bấm Lưu.'); }; r.readAsDataURL(f);}); urlInp.addEventListener('input',()=>{ preview.src=urlInp.value||linkIcon(k); }); preview.src=linkIcon(k); });
+  // Nạp từ bio-config.json
+  async function fetchRemoteAndApply(url='./bio-config.json'){
+    try{
+      const res = await fetch(url, { cache:'no-store' });
+      if(!res.ok) return toast('Không tìm thấy bio-config.json');
+      const cfg = await res.json();
+      const errs = validate(cfg); if (errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
+      saveConfig(cfg); fill(cfg); addHistory('load-remote', cfg); toast('Đã nạp & áp dụng từ bio-config.json');
+    }catch{ toast('Lỗi tải file cấu hình.'); }
+  }
+  $('#btnLoadRemote').addEventListener('click',()=>fetchRemoteAndApply());
+
+  // Import từ file JSON
+  $('#btnImportFile').addEventListener('click',()=>$('#importFile').click());
+  $('#importFile').addEventListener('change', e=>{
+    const f=e.target.files?.[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const cfg=JSON.parse(r.result);
+        const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
+        saveConfig(cfg); fill(cfg); addHistory('import-file', cfg); toast('Đã import từ file.');
+      }catch{ toast('File JSON không hợp lệ.'); }
+    };
+    r.readAsText(f);
+  });
+
+  // Links: icon file
+  linkKeys.forEach(k=>{
+    const file=$(`#${k}_iconFile`), urlInp=$(`#${k}_iconUrl`), preview=$(`#${k}_preview`);
+    file.addEventListener('change',e=>{
+      const f=e.target.files&&e.target.files[0]; if(!f) return;
+      if(!f.type.startsWith('image/')) return toast('Chỉ chấp nhận ảnh.');
+      if(f.size>150*1024) return toast('Icon >150KB. Vui lòng nén nhỏ hơn.');
+      const r=new FileReader(); r.onload=()=>{ urlInp.value=r.result; preview.src=r.result; toast('Đã tải icon. Bấm Lưu.'); };
+      r.readAsDataURL(f);
+    });
+    urlInp.addEventListener('input',()=>{ preview.src=urlInp.value||linkIcon(k); });
+    preview.src = linkIcon(k);
+  });
 
   // Avatar upload
-  if(avatarFile) avatarFile.addEventListener('change',e=>{const file=e.target.files&&e.target.files[0]; if(!file) return; if(!file.type||!file.type.startsWith('image/')){toast('Chỉ chấp nhận file ảnh.'); e.target.value=''; return;} if(file.size>AVATAR_MAX_BYTES){toast('Ảnh quá lớn. ≤ 1.5MB.'); e.target.value=''; return;} const r=new FileReader(); r.onload=()=>{const dataUrl=r.result; avatarInp.value=dataUrl; if(avatarPreview) avatarPreview.src=dataUrl; toast('Đã tải ảnh. Bấm Lưu.');}; r.onerror=()=>toast('Không đọc được file ảnh.'); r.readAsDataURL(file);});
+  function handleAvatarFileChange(e){
+    const file=e.target.files&&e.target.files[0]; if(!file) return;
+    if(!file.type||!file.type.startsWith('image/')){toast('Chỉ chấp nhận file ảnh.'); e.target.value=''; return;}
+    if(file.size>AVATAR_MAX_BYTES){toast('Ảnh quá lớn. Vui lòng chọn ảnh ≤ 1.5MB.'); e.target.value=''; return;}
+    const reader=new FileReader();
+    reader.onload=()=>{ const dataUrl=reader.result; avatarInp.value=dataUrl; if(avatarPreview) avatarPreview.src=dataUrl; toast('Đã tải ảnh. Bấm Lưu để lưu.'); };
+    reader.onerror=()=>toast('Không đọc được file ảnh.');
+    reader.readAsDataURL(file);
+  }
+  if(avatarFile) avatarFile.addEventListener('change',handleAvatarFileChange);
 
-  (function init(){const cfg=loadConfig(); applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9'); fill(cfg); renderHistory(); showTab('appearance');})();
+  // Login modal
+  const loginModal=$('#loginModal');
+  $('#btnOpenLogin').addEventListener('click',()=>{loginModal.style.display='grid';$('#username').focus()});
+  $('#btnCloseLogin').addEventListener('click',()=>loginModal.style.display='none');
+  $('#btnLogin').addEventListener('click',()=>{
+    const u=$('#username').value.trim(); const p=$('#password').value;
+    if(u===USERNAME && p===PASSWORD){ setAdmin(true); loginModal.style.display='none'; toast('Đăng nhập thành công!'); fill(loadConfig()); }
+    else toast('Sai tài khoản hoặc mật khẩu.');
+  });
+  $('#btnLogout').addEventListener('click',()=>{ setAdmin(false); toast('Đã đăng xuất.'); });
+
+  (function init(){
+    const cfg=loadConfig();
+    applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9');
+    fill(cfg);
+    renderHistory();
+    setAdmin(localStorage.getItem(ADMIN_KEY)==='true');
+    showTab('appearance');
+  })();
 </script>
 </body>
 </html>
