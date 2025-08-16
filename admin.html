@@ -11,7 +11,6 @@
 <link rel="icon" href="img/bio-icon.png" type="image/png">
 
 <style>
-  /* ===== THEME MAP CHUNG (đồng bộ với index.html) ===== */
   :root { --accent:#60a5fa; --ring:rgba(96,165,250,.35) }
   .theme-light{ --bg:#f7f8fb; --card:#ffffff; --card-2:#f4f6ff; --text:#0f172a; --muted:#556075; --shadow:0 10px 28px rgba(2,6,23,.08) }
   .theme-dark{ --bg:#0b0c10; --card:#111317; --card-2:#141821; --text:#e6eaf0; --muted:#a3aab6; --shadow:0 14px 40px rgba(0,0,0,.35) }
@@ -181,6 +180,9 @@
             <button id="btnExport" class="btn" type="button">Copy JSON</button>
             <button id="btnImport" class="btn" type="button">Import JSON</button>
             <button id="btnExportConfigFile" class="btn" type="button">Xuất file cấu hình</button>
+            <button id="btnLoadRemote" class="btn" type="button">Nạp từ bio-config.json</button>
+            <button id="btnImportFile" class="btn" type="button">Import từ file</button>
+            <input id="importFile" type="file" accept="application/json" style="display:none">
           </div>
           <textarea id="ioBox" class="full" placeholder="Dán JSON để import hoặc bấm Export để xem cấu hình hiện tại" style="min-height:160px"></textarea>
         </section>
@@ -194,7 +196,9 @@
     </main>
   </div>
 
-  <div class="footer">Xem trang Bio: <a href="./index.html" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)">Bio</a></div>
+  <div class="footer">Xem trang Bio:
+    <a href="./index.html" target="_blank" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)">Bio</a>
+  </div>
 </div>
 
 <div id="loginModal" style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:60">
@@ -211,25 +215,21 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-  // ===== Constants =====
   const STORAGE_KEY='bioConfig_v1';
   const ADMIN_KEY='bioAdmin_v1';
   const HISTORY_KEY='bioHistory_v1';
   const AVATAR_MAX_BYTES=1.5*1024*1024;
 
-  // Demo login (đổi theo bạn)
+  // DEMO login — nên thay bằng cơ chế hash nếu repo public
   const USERNAME='ThanhNha245';
   const PASSWORD='ThanhNha2405!!@@';
 
-  // ===== Defaults =====
   const DEFAULTS={name:'Your Name',role:'Nhà phát triển IoT & Web',city:'HCMC, Việt Nam',avatar:'https://picsum.photos/300?grayscale',openToWork:true,accent:'#60a5fa',theme:'gradient',bio:'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',badges:['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],links:{facebook:'',instagram:'',github:'',website:'',youtube:'',tiktok:'',zalo:'',telegram:''},projects:[{title:'Chronos Mini — Đồng hồ ESP32-S3',url:'#',desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.'},{title:'SmartHome 4-Relay',url:'#',desc:'Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải.'},{title:'Yahu — Chat • Call • Blog',url:'#',desc:'Webapp full-stack, gọn và nhanh.'}],contact:{email:'you@example.com',phone:'+84',zalo:'',telegram:''}};
 
-  // ===== Shortcuts =====
   const $=s=>document.querySelector(s);
   const $$=s=>Array.from(document.querySelectorAll(s));
   function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
-  // ===== Theme apply (đồng bộ xem trước) =====
   function applyTheme(theme,accent){
     document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');
     const t=['light','dark','pastel','gradient'].includes(theme)?theme:'dark';
@@ -239,13 +239,11 @@
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content',ac);
   }
 
-  // ===== Storage =====
   function loadConfig(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{...DEFAULTS}}catch{return {...DEFAULTS}}}
   function saveConfig(cfg){localStorage.setItem(STORAGE_KEY,JSON.stringify(cfg))}
   function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return []}}
   function saveHistory(list){localStorage.setItem(HISTORY_KEY,JSON.stringify(list.slice(-50)))}
 
-  // ===== History helpers (fix Invalid time value) =====
   function addHistory(action,cfg){
     const list=loadHistory();
     list.push({t:Date.now(),action:String(action||'save'),cfg:cfg&&typeof cfg==='object'?cfg:{}});
@@ -268,9 +266,8 @@
       if(!when||!cfg)continue;
       norm.push({t:when.getTime(),action:String(it.action||'save'),cfg});
     }
-    const saved=localStorage.getItem(HISTORY_KEY)||'[]';
     const rebuilt=JSON.stringify(norm);
-    if(saved!==rebuilt)localStorage.setItem(HISTORY_KEY,rebuilt);
+    if((localStorage.getItem(HISTORY_KEY)||'[]')!==rebuilt)localStorage.setItem(HISTORY_KEY,rebuilt);
 
     if(!norm.length){wrap.innerHTML='<div class="muted">Chưa có lịch sử.</div>';return;}
     wrap.innerHTML=norm.map((it,i)=>{
@@ -291,7 +288,6 @@
     }));
   }
 
-  // ===== Admin auth =====
   function isAdmin(){return localStorage.getItem(ADMIN_KEY)==='true'}
   function setAdmin(flag){
     localStorage.setItem(ADMIN_KEY,flag?'true':'false');
@@ -300,12 +296,10 @@
     $('#btnOpenLogin').style.display=flag?'none':'inline-block';
   }
 
-  // ===== Tabs =====
   const navButtons=$$('.nav .btn'); const panes=$$('[data-pane]');
   function showTab(id){panes.forEach(p=>p.hidden=p.getAttribute('data-pane')!==id); navButtons.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
   navButtons.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 
-  // ===== Refs =====
   const themeSelect=$('#themeSelect'), accentInput=$('#accent'), openToWorkSel=$('#openToWork');
   const nameInp=$('#name'), roleInp=$('#role'), cityInp=$('#city'), avatarInp=$('#avatar'), bioInp=$('#bio');
   const avatarFile=$('#avatarFile'), avatarPreview=$('#avatarPreview');
@@ -315,7 +309,6 @@
   const p3t=$('#p3_title'),p3u=$('#p3_url'),p3d=$('#p3_desc');
   const email=$('#email'), phone=$('#phone'), contactZalo=$('#contactZalo'), contactTelegram=$('#contactTelegram');
 
-  // Dynamic links form
   const linkKeys=['facebook','instagram','github','website','youtube','tiktok','zalo','telegram'];
   const linksForm=$('#linksForm');
   linksForm.innerHTML=linkKeys.map(k=>`
@@ -331,8 +324,7 @@
       </div>
     </div>
   `).join('');
-  
-  // Icon helpers
+
   function linkIcon(key){
     const map = {
       facebook:`<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,
@@ -347,7 +339,6 @@
     return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>${map[key] || map.website}</svg>`;
   }
 
-  // ===== Fill & Read =====
   function fill(cfg){
     applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9');
     themeSelect.value=cfg.theme||'dark'; accentInput.value=cfg.accent||'#0ea5e9'; openToWorkSel.value=String(!!cfg.openToWork);
@@ -412,47 +403,29 @@
     return errs;
   }
 
-  // ===== Apply/Save helpers (đã thêm toast) =====
-function saveSection(readFn) {
-  if (!isAdmin()) return toast('Bạn cần đăng nhập admin.');
-  const cfg = loadConfig();
-  readFn(cfg);
-  const errs = validate(cfg);
-  if (errs.length) return toast('Lỗi:\n- ' + errs.join('\n- '));
-  try {
-    saveConfig(cfg);
-    addHistory('save', cfg);
-    toast('Đã lưu (local).');
-  } catch (e) {
-    if (e.name === 'QuotaExceededError') {
-      toast('Lỗi: Vượt quá dung lượng lưu trữ. Vui lòng nén ảnh hoặc xóa lịch sử.');
-    } else {
-      toast('Lỗi khi lưu. Kiểm tra console.');
-      console.error(e);
-    }
+  // ====== FIX: Thêm applySection và chỉ giữ 1 saveSection ======
+  function applySection(readFn){
+    const cfg = loadConfig();
+    readFn(cfg);
+    const errs = validate(cfg);
+    if (errs.length){ toast('Lỗi:\n- ' + errs.join('\n- ')); return; }
+    try{ applyTheme(cfg.theme,cfg.accent); fill(cfg); toast('Đã áp dụng tạm (chưa lưu).'); }
+    catch(e){ console.error(e); toast('Không áp dụng được – xem console.'); }
   }
-}
-  function saveSection(readFn){ 
+  function saveSection(readFn){
     if(!isAdmin()) return toast('Bạn cần đăng nhập admin.');
-    const cfg=loadConfig(); readFn(cfg);
+    const cfg = loadConfig(); readFn(cfg);
     const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
-    try{
-      saveConfig(cfg); 
-      addHistory('save',cfg); 
-      toast('Đã lưu (local).');
-    } catch(e){
-      if(e.name === 'QuotaExceededError'){
-        toast('Lỗi: Vượt quá dung lượng lưu trữ. Vui lòng nén ảnh hoặc xóa lịch sử.');
-      } else {
-        toast('Lỗi khi lưu. Kiểm tra console.');
-        console.error(e);
-      }
+    try{ saveConfig(cfg); addHistory('save',cfg); toast('Đã lưu (local).'); }
+    catch(e){
+      if(e.name==='QuotaExceededError') toast('Lỗi: Vượt quá dung lượng lưu trữ. Vui lòng nén ảnh hoặc xóa lịch sử.');
+      else { console.error(e); toast('Lỗi khi lưu. Kiểm tra console.'); }
     }
   }
 
-  // ===== Bind buttons =====
-  $('#btnAppearanceApply').addEventListener('click',()=>applySection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true'; applyTheme(c.theme,c.accent)}));
-  $('#btnAppearanceSave').addEventListener('click',()=>saveSection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true'; applyTheme(c.theme,c.accent)}));
+  // ===== Buttons =====
+  $('#btnAppearanceApply').addEventListener('click',()=>applySection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true';}));
+  $('#btnAppearanceSave').addEventListener('click',()=>saveSection(c=>{c.theme=themeSelect.value;c.accent=accentInput.value||c.accent;c.openToWork=openToWorkSel.value==='true';}));
 
   $('#btnProfileApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnProfileSave').addEventListener('click',()=>saveSection(readAllInto));
@@ -463,7 +436,7 @@ function saveSection(readFn) {
   $('#btnContactApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnContactSave').addEventListener('click',()=>saveSection(readAllInto));
 
-  // ===== IO =====
+  // IO
   $('#btnApply').addEventListener('click',()=>applySection(readAllInto));
   $('#btnSave').addEventListener('click',()=>saveSection(readAllInto));
   $('#btnReset').addEventListener('click',()=>{
@@ -472,9 +445,12 @@ function saveSection(readFn) {
       saveConfig(DEFAULTS); fill(DEFAULTS); addHistory('reset',DEFAULTS); toast('Đã khôi phục mặc định.');
     }
   });
-  $('#btnExport').addEventListener('click',()=>{
+  // Copy JSON: ưu tiên Clipboard API, fallback execCommand
+  $('#btnExport').addEventListener('click', async ()=>{
     const s=JSON.stringify(loadConfig(),null,2);
-    $('#ioBox').value=s; $('#ioBox').select(); document.execCommand('copy'); toast('Đã copy JSON vào clipboard.');
+    $('#ioBox').value=s;
+    try{ await navigator.clipboard.writeText(s); toast('Đã copy JSON vào clipboard.'); }
+    catch{ $('#ioBox').select(); document.execCommand('copy'); toast('Đã copy (fallback).'); }
   });
   $('#btnImport').addEventListener('click',()=>{
     if(!isAdmin()) return toast('Bạn cần đăng nhập admin.');
@@ -488,29 +464,49 @@ function saveSection(readFn) {
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bio-config.json';
     document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
   });
-  
-  // ===== Links: icon file → DataURL & URL watch =====
+
+  // Nạp từ bio-config.json
+  async function fetchRemoteAndApply(url='./bio-config.json'){
+    try{
+      const res = await fetch(url, { cache:'no-store' });
+      if(!res.ok) return toast('Không tìm thấy bio-config.json');
+      const cfg = await res.json();
+      const errs = validate(cfg); if (errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
+      saveConfig(cfg); fill(cfg); addHistory('load-remote', cfg); toast('Đã nạp & áp dụng từ bio-config.json');
+    }catch{ toast('Lỗi tải file cấu hình.'); }
+  }
+  $('#btnLoadRemote').addEventListener('click',()=>fetchRemoteAndApply());
+
+  // Import từ file JSON
+  $('#btnImportFile').addEventListener('click',()=>$('#importFile').click());
+  $('#importFile').addEventListener('change', e=>{
+    const f=e.target.files?.[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const cfg=JSON.parse(r.result);
+        const errs=validate(cfg); if(errs.length) return toast('Lỗi:\n- '+errs.join('\n- '));
+        saveConfig(cfg); fill(cfg); addHistory('import-file', cfg); toast('Đã import từ file.');
+      }catch{ toast('File JSON không hợp lệ.'); }
+    };
+    r.readAsText(f);
+  });
+
+  // Links: icon file
   linkKeys.forEach(k=>{
     const file=$(`#${k}_iconFile`), urlInp=$(`#${k}_iconUrl`), preview=$(`#${k}_preview`);
     file.addEventListener('change',e=>{
       const f=e.target.files&&e.target.files[0]; if(!f) return;
       if(!f.type.startsWith('image/')) return toast('Chỉ chấp nhận ảnh.');
       if(f.size>150*1024) return toast('Icon >150KB. Vui lòng nén nhỏ hơn.');
-      const r=new FileReader(); r.onload=()=>{
-        urlInp.value=r.result;
-        preview.src=r.result;
-        toast('Đã tải icon. Bấm Lưu.');
-      };
+      const r=new FileReader(); r.onload=()=>{ urlInp.value=r.result; preview.src=r.result; toast('Đã tải icon. Bấm Lưu.'); };
       r.readAsDataURL(f);
     });
-    urlInp.addEventListener('input', () => {
-      preview.src = urlInp.value || linkIcon(k);
-    });
-    // Set default icon on load
+    urlInp.addEventListener('input',()=>{ preview.src=urlInp.value||linkIcon(k); });
     preview.src = linkIcon(k);
   });
 
-  // ===== Upload avatar handler =====
+  // Avatar upload
   function handleAvatarFileChange(e){
     const file=e.target.files&&e.target.files[0]; if(!file) return;
     if(!file.type||!file.type.startsWith('image/')){toast('Chỉ chấp nhận file ảnh.'); e.target.value=''; return;}
@@ -522,7 +518,7 @@ function saveSection(readFn) {
   }
   if(avatarFile) avatarFile.addEventListener('change',handleAvatarFileChange);
 
-  // ===== Login modal =====
+  // Login modal
   const loginModal=$('#loginModal');
   $('#btnOpenLogin').addEventListener('click',()=>{loginModal.style.display='grid';$('#username').focus()});
   $('#btnCloseLogin').addEventListener('click',()=>loginModal.style.display='none');
@@ -533,7 +529,6 @@ function saveSection(readFn) {
   });
   $('#btnLogout').addEventListener('click',()=>{ setAdmin(false); toast('Đã đăng xuất.'); });
 
-  // ===== Init =====
   (function init(){
     const cfg=loadConfig();
     applyTheme(cfg.theme||'dark', cfg.accent||'#0ea5e9');
