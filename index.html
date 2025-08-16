@@ -23,7 +23,7 @@
       --card-2: #11151b;
       --muted: #a3aab6;
       --text: #e6eaf0;
-      --accent: #0ea5e9; /* default, overridden by theme */
+      --accent: #0ea5e9; 
       --ring: rgba(14,165,233,.28);
       --ok: #10b981;
       --shadow: 0 12px 40px rgba(0,0,0,.35);
@@ -31,7 +31,6 @@
     }
 
     /* ========= THEMES ========= */
-    /* Light: nền trắng, chữ đen, accent xanh */
     .theme-light {
       --bg:#f7f8fb; --card:#ffffff; --card-2:#f6f8ff;
       --muted:#445063; --text:#0f172a; --accent:#0ea5e9; --ring:rgba(14,165,233,.22);
@@ -39,7 +38,6 @@
       --grid-bg: radial-gradient(900px 900px at 110% -10%, rgba(14,165,233,.10), transparent 60%),
                  radial-gradient(700px 700px at -10% 110%, rgba(34,197,94,.08), transparent 60%);
     }
-    /* Dark: nền xám đen, chữ trắng, accent xanh ngọc */
     .theme-dark {
       --bg:#0b0c10; --card:#0e1116; --card-2:#11151b;
       --muted:#a3aab6; --text:#e6eaf0; --accent:#14b8a6; --ring:rgba(20,184,166,.28);
@@ -47,7 +45,6 @@
       --grid-bg: radial-gradient(1200px 1200px at 110% -10%, rgba(20,184,166,.10), transparent 60%),
                  radial-gradient(900px 900px at -10% 110%, rgba(14,165,233,.10), transparent 60%);
     }
-    /* Pastel: nền hồng nhạt + accent tím */
     .theme-pastel {
       --bg:#fff1f2; --card:#ffffff; --card-2:#fff7fb;
       --muted:#6b7280; --text:#111827; --accent:#a78bfa; --ring:rgba(167,139,250,.25);
@@ -55,7 +52,6 @@
       --grid-bg: radial-gradient(900px 900px at 100% -10%, rgba(244,114,182,.18), transparent 60%),
                  radial-gradient(700px 700px at -10% 110%, rgba(167,139,250,.20), transparent 60%);
     }
-    /* Gradient: nền chuyển màu xanh–tím */
     .theme-gradient {
       --bg:#0b0c10; --card:rgba(14,17,22,.9); --card-2:rgba(17,21,27,.9);
       --muted:#cbd5e1; --text:#f8fafc; --accent:#60a5fa; --ring:rgba(96,165,250,.35);
@@ -133,6 +129,13 @@
     .link svg{ width:22px; height:22px; opacity:.9 }
     .pill{ margin-left:auto; font-size:.85rem; color:var(--muted) }
 
+    /* icon ảnh cho liên kết nhanh */
+    .link .icon-img{
+      width:22px; height:22px; border-radius:6px; flex:0 0 22px;
+      object-fit:cover; border:1px solid rgba(148,163,184,.18); background:#0000
+    }
+    .link .icon-wrap{ display:flex; align-items:center; gap:12px }
+
     /* ========= CONTENT ========= */
     .prose{line-height:1.7}
     .prose p{margin:0}
@@ -164,14 +167,6 @@
 
     footer{padding:18px; text-align:center; color:var(--muted)}
     .sr{position:absolute;width:1px;height:1px;clip:rect(1px,1px,1px,1px);overflow:hidden;white-space:nowrap}
-
-    /* ========= Admin gear (kept for tests; hidden by default) ========= */
-    .gear{position:fixed; right:18px; bottom:18px; z-index:40; display:none}
-    .gear.show{display:block}
-    .gear-btn{border:1px solid rgba(148,163,184,.25); background:var(--card); border-radius:14px; padding:12px 14px;
-      display:flex; align-items:center; gap:8px; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.25)}
-
-    @media (prefers-reduced-motion: reduce){ .link, .project{ transition: none } }
   </style>
 </head>
 <body>
@@ -237,14 +232,8 @@
     </footer>
   </div>
 
-  <!-- Admin gear kept for tests; stays hidden on public page -->
-  <div class="gear" id="gear">
-    <button id="openSettings" class="gear-btn" aria-label="Mở cài đặt">⚙️ Cài đặt</button>
-  </div>
-
-  <!-- Test harness (unchanged tests) -->
   <script>
-    /* ===== Utilities & State (kept) ===== */
+    /* ===== Utilities & State ===== */
     const yearEl = document.getElementById('year');
     const footerName = document.getElementById('footerName');
     yearEl.textContent = new Date().getFullYear();
@@ -269,9 +258,10 @@
       avatar: 'https://picsum.photos/300?grayscale',
       openToWork: true,
       accent: '#0ea5e9',
-      theme: 'dark', /* default theme */
+      theme: 'dark',
       bio: 'Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.',
       badges: ['⚡ ESP32 / IoT','🎨 UI/UX','🧠 AI Tools'],
+      // links: có thể là string hoặc { url, icon }
       links: { facebook:'', instagram:'', github:'', website:'', youtube:'', tiktok:'', zalo:'', telegram:'' },
       projects: [
         { title:'Chronos Mini — Đồng hồ ESP32-S3', url:'#', desc:'Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder.' },
@@ -282,6 +272,7 @@
     };
 
     const STORAGE_KEY = 'bioConfig_v1';
+    const SERVER_CONFIG_URL = 'bio-config.json';
 
     function loadConfig(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {...DEFAULTS}; } catch { return {...DEFAULTS}; } }
     function saveConfig(cfg){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
@@ -289,7 +280,8 @@
     function setAccent(color){
       document.documentElement.style.setProperty('--accent', color);
       document.documentElement.style.setProperty('--ring', hexToRgba(color, .28));
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta) themeMeta.setAttribute('content', color);
     }
     function hexToRgba(hex, a){
       const v = hex.replace('#','');
@@ -312,6 +304,22 @@
       return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${map[key]||map.website}</svg>`
     }
 
+    function linkIconElement(key, customIconUrl){
+      if (customIconUrl) {
+        const img = document.createElement('img');
+        img.className = 'icon-img';
+        img.alt = key + ' icon';
+        img.referrerPolicy = 'no-referrer';
+        img.decoding = 'async';
+        img.loading = 'lazy';
+        img.src = customIconUrl;
+        return img;
+      }
+      const span = document.createElement('span');
+      span.innerHTML = linkIcon(key);
+      return span.firstElementChild || span;
+    }
+
     function setTheme(theme){
       document.body.classList.remove('theme-light','theme-dark','theme-pastel','theme-gradient');
       switch((theme||'dark').toLowerCase()){
@@ -323,10 +331,8 @@
       }
     }
 
-    // ⭐ NEW: cập nhật <title> và og:title theo tên
     function updateHeadName(name){
       const safeName = String(name || 'Your Name').trim();
-      // Tiêu đề theo yêu cầu: "Tôi là <Name> - Bio"
       document.title = `Tôi là ${safeName} - Bio`;
       const ogTitle = document.querySelector('meta[property="og:title"]');
       if (ogTitle) ogTitle.setAttribute('content', `${safeName} - Bio`);
@@ -336,7 +342,7 @@
       setTheme(cfg.theme || DEFAULTS.theme);
 
       const nameToUse = cfg.name || DEFAULTS.name;
-      updateHeadName(nameToUse);                 // ⭐ gọi cập nhật tiêu đề/og:title
+      updateHeadName(nameToUse);
 
       els.name.textContent = nameToUse;
       footerName.textContent = nameToUse;
@@ -347,7 +353,6 @@
       const html = cfg.bio ? cfg.bio.replace(/\n/g,'<br/>') : '';
       els.bio.innerHTML = html;
 
-      /* Accent theo theme trước, sau đó nếu người dùng có accent riêng thì override */
       const themeAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9';
       setAccent(cfg.accent || themeAccent);
 
@@ -359,12 +364,23 @@
         const span=document.createElement('span'); span.className='badge'; span.textContent=txt; els.badges.appendChild(span);
       });
 
-      // links
+      // links (hỗ trợ string hoặc {url, icon})
       els.links.innerHTML = '';
       Object.entries(cfg.links||{}).forEach(([k,v])=>{
-        if(!v) return; let host=''; try{ host=new URL(v).hostname.replace('www.',''); }catch{}
-        const a=document.createElement('a'); a.className='link'; a.href=v; a.target='_blank'; a.rel='noopener';
-        a.innerHTML = `${linkIcon(k)} ${k.charAt(0).toUpperCase()+k.slice(1)} <span class='pill'>${host}</span>`;
+        const item = (typeof v === 'string') ? { url: v } : (v || {});
+        if(!item.url) return;
+        let host=''; try{ host=new URL(item.url).hostname.replace('www.',''); }catch{}
+        const a=document.createElement('a'); a.className='link'; a.href=item.url; a.target='_blank'; a.rel='noopener';
+
+        const iconEl = linkIconElement(k, item.icon);
+        const wrap = document.createElement('div'); wrap.className='icon-wrap'; wrap.appendChild(iconEl);
+
+        const label = k.charAt(0).toUpperCase()+k.slice(1);
+        const pill = document.createElement('span'); pill.className='pill'; pill.textContent=host;
+
+        a.appendChild(wrap);
+        a.appendChild(document.createTextNode(' ' + label));
+        a.appendChild(pill);
         els.links.appendChild(a);
       });
 
@@ -385,37 +401,27 @@
       if(c.telegram){ const a=document.createElement('a'); a.className='btn'; a.href=c.telegram; a.textContent='✈️ Telegram'; els.contactBtns.appendChild(a); }
     }
 
-    // ===== Init =====
-    const cfgInit = loadConfig();
-    try { applyConfig(cfgInit); } catch(e){ console.error('Apply config failed:', e); }
-
-    // ===== Tests (unchanged) =====
-    const runBtn = document.getElementById('runTests');
-    const testPanel = document.getElementById('testPanel');
-    const gear = document.getElementById('gear');
-    function assert(name, cond){ return { name, pass: !!cond }; }
-    function render(results){
-      testPanel.style.display='block';
-      testPanel.innerHTML = '<strong>Test results</strong><br>' + results.map(r=>`• ${r.pass?'✅':'❌'} ${r.name}`).join('<br>');
+    // Ưu tiên đọc file config từ server nếu có
+    async function tryLoadServerConfig(){
+      try {
+        const res = await fetch(SERVER_CONFIG_URL, { cache:'no-store' });
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json && typeof json === 'object' ? json : null;
+      } catch { return null; }
     }
-    runBtn.addEventListener('click',()=>{
-      const results = [];
-      const sample = 'Xin chao\nDay la dong 2';
-      const out = sample.replace(/\n/g,'<br/>');
-      results.push(assert('Replace \\n with <br/>', out === 'Xin chao<br/>Day la dong 2'));
-      results.push(assert('Gear hidden by default', !gear.classList.contains('show')));
-      const cfg = loadConfig(); const beforeJSON = JSON.stringify(cfg);
-      cfg.badges = ['A','B']; saveConfig(cfg);
-      const afterJSON = JSON.stringify(loadConfig());
-      results.push(assert('LocalStorage round-trip', beforeJSON !== afterJSON && /"A"/.test(afterJSON)));
-      // NEW quick test: title updates with name
-      const prevTitle = document.title;
-      updateHeadName('Thanh Nhã');
-      results.push(assert('Title updated with name', document.title.includes('Thanh Nhã - Bio')));
-      updateHeadName(cfgInit.name || 'Your Name'); // restore
-      render(results);
-    });
-    if (new URLSearchParams(location.search).get('tests')==='1') { document.getElementById('runTests').click(); }
+
+    async function initWithPreferServer(){
+      const serverCfg = await tryLoadServerConfig();
+      const localCfg  = loadConfig();
+      const cfg = serverCfg || localCfg || {...DEFAULTS};
+      setTheme(cfg.theme || DEFAULTS.theme);
+      setAccent(cfg.accent || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0ea5e9');
+      applyConfig(cfg);
+    }
+
+    // ===== Init =====
+    initWithPreferServer();
   </script>
 </body>
 </html>
