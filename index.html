@@ -174,8 +174,8 @@
       contact: { email:'you@example.com', phone:'+84', zalo:'', telegram:'' }
     };
 
-    const STORAGE_KEY = 'bioConfig_v1';
-    const SERVER_CONFIG_URL = 'bio-config.json';
+	const SERVER_CONFIG_URL = 'bio-config.json?v=' + (window.BIO_CFG_VER || Date.now());
+	const res = await fetch(SERVER_CONFIG_URL, { cache:'reload' });		
 
     function loadConfig(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {...DEFAULTS}; } catch { return {...DEFAULTS}; } }
     function saveConfig(cfg){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); }
