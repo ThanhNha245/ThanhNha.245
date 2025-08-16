@@ -1,0 +1,27 @@
+{
+  "name": "Thanh Nhã",
+  "role": "Nhà phát triển IoT & Web",
+  "city": "Trà Vinh, Việt Nam",
+  "avatar": "https://link-anh-avatar-cua-ban.jpg",
+  "openToWork": true,
+  "accent": "#a78bfa",
+  "theme": "pastel",
+  "bio": "Tôi là nhà phát triển IoT & web, tập trung vào ESP32, giao diện đẹp & trải nghiệm mượt.<br/>Tôi thích biến ý tưởng thành sản phẩm chạy được.",
+  "badges": ["⚡ ESP32 / IoT", "🎨 UI/UX", "🧠 AI Tools"],
+  "links": {
+    "facebook": {"url": "https://facebook.com/yourid"},
+    "instagram": {"url": "https://instagram.com/yourid"},
+    "github": {"url": "https://github.com/yourid"},
+    "youtube": {"url": "https://youtube.com/@yourid"},
+    "tiktok": {"url": "https://tiktok.com/@yourid"},
+    "zalo": {"url": "https://zalo.me/yourid"},
+    "telegram": {"url": "https://t.me/yourid"},
+    "website": {"url": "https://your-domain.com"}
+  },
+  "projects": [
+    { "title": "Chronos Mini — Đồng hồ ESP32-S3", "url": "#", "desc": "Thông báo cuộc gọi/tin nhắn, hiệu ứng pastel, JPEG decoder." },
+    { "title": "SmartHome 4-Relay", "url": "#", "desc": "Điều khiển 4 kênh 220V, Web UI, cảnh báo quá tải." },
+    { "title": "Yahu — Chat • Call • Blog", "url": "#", "desc": "Webapp full-stack, gọn và nhanh." }
+  ],
+  "contact": { "email": "you@example.com", "phone": "+84", "zalo": "", "telegram": "" }
+}
